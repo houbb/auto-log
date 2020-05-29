@@ -25,19 +25,10 @@
 </dependency>
 ```
 
-## 入门例子
-
-- 示例代码
-
-```java
-List<Long> resultList = LuckyMoneyHelper.luckyMoney(1000, 5);
-```
-
-- 结果如下
-
-```xml
-[269, 57, 42, 190, 89, 354]
-```
-
 # Road-Map
 
+- [ ] 注解式
+
+- [ ] 声明式
+
+- [ ] spring 兼容
