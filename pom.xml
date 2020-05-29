@@ -60,6 +60,11 @@
                 <artifactId>auto-log-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>auto-log-spring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!--============================== INTER ==============================-->
             <dependency>

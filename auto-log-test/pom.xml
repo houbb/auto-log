@@ -17,11 +17,19 @@
             <groupId>com.github.houbb</groupId>
             <artifactId>auto-log-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>auto-log-spring</artifactId>
+        </dependency>
 
         <!--============================== OTHER ==============================-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
         </dependency>
     </dependencies>
 

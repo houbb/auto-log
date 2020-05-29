@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 自动日志 aop 配置
+ *
+ * https://blog.csdn.net/u013905744/article/details/91364736
  * @author binbin.hou
  * @since 0.0.3
  */
@@ -26,7 +28,7 @@ public class AutoLogAopConfig {
      * @since 0.0.3
      */
     @Bean
-    public Advisor advisor() {
+    public DefaultPointcutAdvisor advisor() {
         MethodInterceptor interceptor = new AutoLogMethodInterceptor();
         AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(AutoLog.class, true);
         DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();

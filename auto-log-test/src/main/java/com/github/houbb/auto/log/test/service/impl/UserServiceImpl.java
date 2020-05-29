@@ -2,11 +2,13 @@ package com.github.houbb.auto.log.test.service.impl;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.test.service.UserService;
+import org.springframework.stereotype.Service;
 
 /**
  * @author binbin.hou
  * @since 0.0.2
  */
+@Service
 public class UserServiceImpl implements UserService {
 
     @Override
