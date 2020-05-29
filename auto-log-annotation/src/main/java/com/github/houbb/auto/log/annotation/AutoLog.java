@@ -20,10 +20,10 @@ import java.lang.annotation.Target;
  * 输出信息  ip 等等。
  *
  * 不强依赖 spring
- * 可以 CGLIB==>AOP Proxy 实现
+ * 可以 CGLIB OP Proxy 实现
  *
  * SPI 深入
- * 日志输出深入 ILog==>String
+ * 日志输出深入 ILog String
  *
  * ToString() 的实现策略。
  *
