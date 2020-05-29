@@ -12,8 +12,23 @@ import java.lang.annotation.Target;
  *
  * slowMillsThreshold 1000
  *
+ * 日志标识。  TraceId
+ * 日志输出级别。（默认为 info）
+ *
+ * 异常能处理类，callback 后期拓展
+ * 其他：
+ * 输出信息  ip 等等。
+ *
+ * 不强依赖 spring
+ * 可以 CGLIB==>AOP Proxy 实现
+ *
+ * SPI 深入
+ * 日志输出深入 ILog==>String
+ *
+ * ToString() 的实现策略。
+ *
  * @author binbin.hou
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -38,6 +53,6 @@ public @interface AutoLog {
      * @return 耗时
      * @since 0.0.1
      */
-    boolean time() default false;
+    boolean costTime() default false;
 
 }

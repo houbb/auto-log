@@ -11,7 +11,11 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <version>0.0.1</version>
+    <modules>
+        <module>auto-log-annotation</module>
+    </modules>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
@@ -36,26 +40,33 @@
         <junit.version>4.12</junit.version>
     </properties>
 
-    <dependencies>
-        <!--============================== SELF ==============================-->
+    <dependencyManagement>
+        <dependencies>
+            <!--============================== SELF ==============================-->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>auto-log-annotation</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
-        <!--============================== INTER ==============================-->
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>heaven</artifactId>
-            <version>${heaven.version}</version>
-        </dependency>
+            <!--============================== INTER ==============================-->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>heaven</artifactId>
+                <version>${heaven.version}</version>
+            </dependency>
 
-        <!--============================== OTHER ==============================-->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <optional>true</optional>
-            <scope>test</scope>
-        </dependency>
+            <!--============================== OTHER ==============================-->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <optional>true</optional>
+                <scope>test</scope>
+            </dependency>
 
-    </dependencies>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
