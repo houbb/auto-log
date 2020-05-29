@@ -9,35 +9,20 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>auto-log-core</artifactId>
+    <artifactId>auto-log-test</artifactId>
 
     <dependencies>
         <!--============================== SELF ==============================-->
         <dependency>
             <groupId>com.github.houbb</groupId>
-            <artifactId>auto-log-annotation</artifactId>
-        </dependency>
-
-        <!--============================== INNER ==============================-->
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>heaven</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>log-integration</artifactId>
+            <artifactId>auto-log-core</artifactId>
         </dependency>
 
         <!--============================== OTHER ==============================-->
         <dependency>
-            <groupId>aopalliance</groupId>
-            <artifactId>aopalliance</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>
