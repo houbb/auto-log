@@ -1,0 +1,1 @@
+package com.github.houbb.auto.log.spring;

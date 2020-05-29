@@ -12,11 +12,12 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
         <module>auto-log-test</module>
+        <module>auto-log-spring</module>
     </modules>
 
     <properties>
@@ -42,6 +43,8 @@
         <!--============================== OTHER ==============================-->
         <junit.version>4.12</junit.version>
         <cglib.version>3.1</cglib.version>
+        <spring.version>4.3.24.RELEASE</spring.version>
+        <aspectj.version>1.8.5</aspectj.version>
     </properties>
 
     <dependencyManagement>
@@ -90,6 +93,34 @@
                 <scope>test</scope>
             </dependency>
 
+            <!--spring-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
