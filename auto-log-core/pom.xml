@@ -9,7 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>auto-log-annotation</artifactId>
+    <artifactId>auto-log-core</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>auto-log-annotation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>auto-log-api</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

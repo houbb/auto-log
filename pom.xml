@@ -12,9 +12,11 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <modules>
         <module>auto-log-annotation</module>
+        <module>auto-log-api</module>
+        <module>auto-log-core</module>
     </modules>
 
     <properties>
@@ -46,6 +48,16 @@
             <dependency>
                 <groupId>com.github.houbb</groupId>
                 <artifactId>auto-log-annotation</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>auto-log-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>auto-log-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
