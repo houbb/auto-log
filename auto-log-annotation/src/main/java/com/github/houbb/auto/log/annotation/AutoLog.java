@@ -25,6 +25,7 @@ import java.lang.annotation.*;
  * ToString() 的实现策略。
  *
  * 添加方法描述参数。
+ *
  * @author binbin.hou
  * @since 0.0.1
  */

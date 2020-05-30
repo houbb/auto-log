@@ -15,8 +15,6 @@
 
 ## 特性
 
-- 声明式编程
-
 - 基于注解+字节码，配置灵活
 
 - 自动适配常见的日志框架
@@ -42,7 +40,7 @@
 ## 入门案例
 
 ```java
-UserService userService = AutoLogBs.proxy(new UserServiceImpl());
+UserService userService = AutoLogHelper.proxy(new UserServiceImpl());
 userService.queryLog("1");
 ```
 
@@ -85,7 +83,7 @@ public class UserServiceImpl implements UserService {
 
 # spring 整合使用
 
-完整示例参考 [SpringServiceTest]()
+完整示例参考 [SpringServiceTest](https://github.com/houbb/auto-log/tree/master/auto-log-test/src/test/java/com/github/houbb/auto/log/spring/SpringServiceTest.java)
 
 ## 注解声明
 
@@ -131,3 +129,7 @@ public class SpringServiceTest {
 - [ ] 注解特性拓展
 
 - [ ] 拦截实现拓展
+
+- [ ] 慢日志处理
+
+- [ ] aop 模块的抽离

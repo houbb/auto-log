@@ -1,4 +1,4 @@
-package spring;
+package com.github.houbb.auto.log.spring;
 
 
 import com.github.houbb.auto.log.test.config.SpringConfig;

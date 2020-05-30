@@ -16,6 +16,15 @@ public final class AutoLogBs {
     }
 
     /**
+     * 新建对象实例
+     * @return this
+     * @since 0.0.3
+     */
+    public static AutoLogBs newInstance() {
+        return new AutoLogBs();
+    }
+
+    /**
      * 根据对象获取对应的代理
      *
      * 提取时将方法处理类当做入参
@@ -23,7 +32,8 @@ public final class AutoLogBs {
      * @return 对应的代理对象
      * @since 0.0.2
      */
-    public static <R> R proxy(final R object) {
+    @SuppressWarnings("unchecked")
+    public <R> R proxy(final R object) {
         final ProxyTypeEnum proxyTypeEnum = ProxyFactory.getProxyType(object);
         if (ProxyTypeEnum.NONE.equals(proxyTypeEnum)) {
             return (R) new NoneProxy(object).proxy();
