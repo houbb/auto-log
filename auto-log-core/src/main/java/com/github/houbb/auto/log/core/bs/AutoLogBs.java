@@ -29,6 +29,7 @@ public final class AutoLogBs {
      *
      * 提取时将方法处理类当做入参
      * @param object 原始对象
+     * @param <R> 泛型
      * @return 对应的代理对象
      * @since 0.0.2
      */
