@@ -133,3 +133,5 @@ public class SpringServiceTest {
 - [ ] 慢日志处理
 
 - [ ] aop 模块的抽离
+
+- [ ] jvm-sandbox 特性
