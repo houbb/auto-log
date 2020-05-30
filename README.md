@@ -21,6 +21,10 @@
 
 - 自动适配常见的日志框架
 
+- 支持编程式的调用
+
+- 支持注解式，完美整合 spring
+
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
 # 快速开始
@@ -31,7 +35,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 
@@ -79,10 +83,51 @@ public class UserServiceImpl implements UserService {
 }
 ```
 
+# spring 整合使用
 
+完整示例参考 [SpringServiceTest]()
+
+## 注解声明
+
+使用 `@EnableAutoLog` 启用自动日志输出
+
+```java
+@Configurable
+@ComponentScan(basePackages = "com.github.houbb.auto.log.test.service")
+@EnableAutoLog
+public class SpringConfig {
+}
+```
+
+## 测试代码
+
+```java
+@ContextConfiguration(classes = SpringConfig.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+public class SpringServiceTest {
+
+    @Autowired
+    private UserService userService;
+
+    @Test
+    public void queryLogTest() {
+        userService.queryLog("1");
+    }
+
+}
+```
+
+- 输出结果
+
+```
+信息: public java.lang.String com.github.houbb.auto.log.test.service.impl.UserServiceImpl.queryLog(java.lang.String) param is [1]
+五月 30, 2020 12:17:51 下午 com.github.houbb.auto.log.core.support.interceptor.AutoLogMethodInterceptor info
+信息: public java.lang.String com.github.houbb.auto.log.test.service.impl.UserServiceImpl.queryLog(java.lang.String) result is result-1
+五月 30, 2020 12:17:51 下午 org.springframework.context.support.GenericApplicationContext doClose
+```
 
 # Road-Map
 
-- [ ] 支持类声明注解
+- [ ] 注解特性拓展
 
-- [ ] spring 兼容
+- [ ] 拦截实现拓展

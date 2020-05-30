@@ -2,6 +2,7 @@ package com.github.houbb.auto.log.core.support.interceptor;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.heaven.response.exception.CommonRuntimeException;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
@@ -23,37 +24,69 @@ public class AutoLogMethodInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-        final long startMills = System.currentTimeMillis();
+        String methodName = null;
+        AutoLog autoLog = null;
 
-        Method method = methodInvocation.getMethod();
-        String methodName = method.toString();
-        AutoLog autoLog = method.getAnnotation(AutoLog.class);
-        if(ObjectUtil.isNotNull(autoLog)) {
-            //1. 是否输入入参
-            if(autoLog.param()) {
-                Object[] params = methodInvocation.getArguments();
-                LOG.info("{} param is {}", methodName, Arrays.toString(params));
+        try {
+            final long startMills = System.currentTimeMillis();
+            // 避免 AOP 时获取不到真正的实现
+            Method method = getCurrentMethod(methodInvocation);
+            methodName = method.toString();
+            autoLog = method.getAnnotation(AutoLog.class);
+
+            if(ObjectUtil.isNotNull(autoLog)) {
+                //1. 是否输入入参
+                if(autoLog.param()) {
+                    Object[] params = methodInvocation.getArguments();
+                    LOG.info("{} param is {}", methodName, Arrays.toString(params));
+                }
             }
-        }
 
-        //2. 执行
-        Object result = methodInvocation.proceed();
-        if(ObjectUtil.isNull(autoLog)) {
+            //2. 执行
+            Object result = methodInvocation.proceed();
+            if(ObjectUtil.isNull(autoLog)) {
+                return result;
+            }
+
+            //3. 结果
+            if(autoLog.result()) {
+                LOG.info("{} result is {}", methodName, result);
+            }
+            //3.1 耗时
+            if(autoLog.costTime()) {
+                final long endMills = System.currentTimeMillis();
+                long costTime = endMills-startMills;
+                LOG.info("{} cost time is {}ms", methodName, costTime);
+            }
+
             return result;
+        } catch (Throwable throwable) {
+            if(ObjectUtil.isNotNull(autoLog)) {
+                LOG.error("{} meet ex", methodName, throwable);
+            }
+            // re throw
+            throw throwable;
         }
-
-        //3. 结果
-        if(autoLog.result()) {
-            LOG.info("{} result is {}", methodName, result);
-        }
-        //3.1 耗时
-        if(autoLog.costTime()) {
-            final long endMills = System.currentTimeMillis();
-            long costTime = endMills-startMills;
-            LOG.info("{} cost time is {}ms", methodName, costTime);
-        }
-
-        return result;
     }
+
+    /**
+     * 获取当前方法信息
+     *
+     * @param methodInvocation 切点
+     * @return 方法
+     * @since 0.0.3
+     */
+    private Method getCurrentMethod(MethodInvocation methodInvocation) {
+        try {
+            // 方法声明
+            Method method = methodInvocation.getMethod();
+
+            Object target = methodInvocation.getThis();
+            return target.getClass().getMethod(method.getName(), method.getParameterTypes());
+        } catch (NoSuchMethodException e) {
+            throw new CommonRuntimeException(e);
+        }
+    }
+
 
 }

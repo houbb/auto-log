@@ -1,6 +1,6 @@
 package com.github.houbb.auto.log.spring.aop;
 
-import com.github.houbb.auto.log.spring.exception.AutoLogSpringException;
+import com.github.houbb.heaven.response.exception.CommonRuntimeException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -74,7 +74,7 @@ public class AutoLogAop {
             Object target = point.getTarget();
             return target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
         } catch (NoSuchMethodException e) {
-            throw new AutoLogSpringException(e);
+            throw new CommonRuntimeException(e);
         }
     }
 

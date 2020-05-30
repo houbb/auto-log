@@ -1,9 +1,6 @@
 package com.github.houbb.auto.log.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 自动注解
@@ -27,11 +24,13 @@ import java.lang.annotation.Target;
  *
  * ToString() 的实现策略。
  *
+ * 添加方法描述参数。
  * @author binbin.hou
  * @since 0.0.1
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Inherited
 public @interface AutoLog {
 
     /**
