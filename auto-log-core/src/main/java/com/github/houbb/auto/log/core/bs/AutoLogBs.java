@@ -1,10 +1,9 @@
 package com.github.houbb.auto.log.core.bs;
 
-import com.github.houbb.auto.log.core.support.proxy.CglibProxy;
-import com.github.houbb.auto.log.core.support.proxy.DynamicProxy;
-import com.github.houbb.heaven.constant.enums.ProxyTypeEnum;
-import com.github.houbb.heaven.support.proxy.ProxyFactory;
-import com.github.houbb.heaven.support.proxy.none.NoneProxy;
+import com.github.houbb.aop.util.ProxyUtil;
+import com.github.houbb.auto.log.core.support.interceptor.AutoLogMethodInterceptor;
+import com.github.houbb.heaven.support.instance.impl.Instances;
+import org.aopalliance.intercept.MethodInterceptor;
 
 /**
  * @author binbin.hou
@@ -35,14 +34,8 @@ public final class AutoLogBs {
      */
     @SuppressWarnings("unchecked")
     public <R> R proxy(final R object) {
-        final ProxyTypeEnum proxyTypeEnum = ProxyFactory.getProxyType(object);
-        if (ProxyTypeEnum.NONE.equals(proxyTypeEnum)) {
-            return (R) new NoneProxy(object).proxy();
-        } else if (ProxyTypeEnum.DYNAMIC.equals(proxyTypeEnum)) {
-            return (R) new DynamicProxy(object).proxy();
-        } else {
-            return (R) new CglibProxy(object).proxy();
-        }
+        final MethodInterceptor methodInterceptor = Instances.singleton(AutoLogMethodInterceptor.class);
+        return ProxyUtil.proxy(object, methodInterceptor);
     }
 
 }
