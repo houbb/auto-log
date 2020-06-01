@@ -10,4 +10,12 @@ public interface UserService {
 
     String queryLog(final String id);
 
+    /**
+     * 慢日志
+     * @param id 标识
+     * @return 结果
+     * @since 0.0.4
+     */
+    String slowLog(final String id);
+
 }

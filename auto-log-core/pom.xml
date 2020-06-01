@@ -5,7 +5,7 @@
     <parent>
         <artifactId>auto-log</artifactId>
         <groupId>com.github.houbb</groupId>
-        <version>0.0.4-SNAPSHOT</version>
+        <version>0.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,16 +27,12 @@
             <groupId>com.github.houbb</groupId>
             <artifactId>log-integration</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>aop</artifactId>
+        </dependency>
 
         <!--============================== OTHER ==============================-->
-        <dependency>
-            <groupId>aopalliance</groupId>
-            <artifactId>aopalliance</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-        </dependency>
 
     </dependencies>
 

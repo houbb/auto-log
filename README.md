@@ -23,6 +23,8 @@
 
 - 支持注解式，完美整合 spring
 
+- 支持慢日志阈值指定，耗时，入参，出参等常见属性指定
+
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
 # 快速开始
@@ -33,7 +35,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
@@ -75,11 +77,22 @@ public class UserServiceImpl implements UserService {
     @Override
     @AutoLog
     public String queryLog(String id) {
-        return "result-"+id);
+        return "result-"+id;
     }
 
 }
 ```
+
+# 注解说明
+
+核心注解 `@AutoLog` 的属性说明如下：
+
+| 属性 | 类型 | 默认值 | 说明 |
+|:--|:--|:--|:--|
+| param | boolean | true | 是否打印入参 |
+| result | boolean | true | 是否打印出参 |
+| costTime | boolean | false | 是否打印耗时 |
+| slowThresholdMills | long | -1 | 当这个值大于等于 0 时，且耗时超过配置值，会输出慢日志 |
 
 # spring 整合使用
 
@@ -128,10 +141,6 @@ public class SpringServiceTest {
 
 - [ ] 注解特性拓展
 
-- [ ] 拦截实现拓展
-
-- [ ] 慢日志处理
-
-- [ ] aop 模块的抽离
-
 - [ ] jvm-sandbox 特性
+
+- [ ] 编译时注解特性 

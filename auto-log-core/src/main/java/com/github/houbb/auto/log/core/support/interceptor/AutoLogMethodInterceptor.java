@@ -14,6 +14,7 @@ import java.util.Arrays;
 
 /**
  * 1. 格式化可以自定义
+ *
  * @author binbin.hou
  * @since 0.0.2
  */
@@ -34,35 +35,43 @@ public class AutoLogMethodInterceptor implements MethodInterceptor {
             methodName = method.toString();
             autoLog = method.getAnnotation(AutoLog.class);
 
-            if(ObjectUtil.isNotNull(autoLog)) {
+            if (ObjectUtil.isNotNull(autoLog)) {
                 //1. 是否输入入参
-                if(autoLog.param()) {
+                if (autoLog.param()) {
                     Object[] params = methodInvocation.getArguments();
-                    LOG.info("{} param is {}", methodName, Arrays.toString(params));
+                    LOG.info("{} param is {}.", methodName, Arrays.toString(params));
                 }
             }
 
             //2. 执行
             Object result = methodInvocation.proceed();
-            if(ObjectUtil.isNull(autoLog)) {
+            if (ObjectUtil.isNull(autoLog)) {
                 return result;
             }
 
             //3. 结果
-            if(autoLog.result()) {
-                LOG.info("{} result is {}", methodName, result);
+            if (autoLog.result()) {
+                LOG.info("{} result is {}.", methodName, result);
             }
             //3.1 耗时
-            if(autoLog.costTime()) {
+            final long slowThreshold = autoLog.slowThresholdMills();
+            if (autoLog.costTime() || slowThreshold >= 0) {
                 final long endMills = System.currentTimeMillis();
-                long costTime = endMills-startMills;
-                LOG.info("{} cost time is {}ms", methodName, costTime);
+                long costTime = endMills - startMills;
+                if (autoLog.costTime()) {
+                    LOG.info("{} cost time is {}ms.", methodName, costTime);
+                }
+
+                //3.2 慢日志
+                if (slowThreshold >= 0 && costTime >= slowThreshold) {
+                    LOG.warn("{} is slow log, {}ms >= {}ms.", methodName, costTime, slowThreshold);
+                }
             }
 
             return result;
         } catch (Throwable throwable) {
-            if(ObjectUtil.isNotNull(autoLog)) {
-                LOG.error("{} meet ex", methodName, throwable);
+            if (ObjectUtil.isNotNull(autoLog)) {
+                LOG.error("{} meet ex.", methodName, throwable);
             }
             // re throw
             throw throwable;
