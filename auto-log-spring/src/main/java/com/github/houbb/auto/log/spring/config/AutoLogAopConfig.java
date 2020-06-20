@@ -1,11 +1,5 @@
 package com.github.houbb.auto.log.spring.config;
 
-import com.github.houbb.auto.log.annotation.AutoLog;
-import com.github.houbb.auto.log.core.support.interceptor.AutoLogMethodInterceptor;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
-import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
