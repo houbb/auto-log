@@ -139,6 +139,10 @@ public class SpringServiceTest {
 
 # Road-Map
 
+- [ ] 添加对于非接口的支持 CGLIB
+
+- [ ] 添加 spring-boot-starter
+
 - [ ] 注解特性拓展
 
 - [ ] jvm-sandbox 特性
