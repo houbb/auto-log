@@ -1,8 +1,8 @@
 package com.github.houbb.auto.log.core.support.interceptor;
 
+import com.github.houbb.aop.core.util.MethodInvocationUtil;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.response.exception.CommonRuntimeException;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
@@ -31,7 +31,7 @@ public class AutoLogMethodInterceptor implements MethodInterceptor {
         try {
             final long startMills = System.currentTimeMillis();
             // 避免 AOP 时获取不到真正的实现
-            Method method = getCurrentMethod(methodInvocation);
+            Method method = MethodInvocationUtil.getActualMethod(methodInvocation);
             methodName = method.toString();
             autoLog = method.getAnnotation(AutoLog.class);
 
@@ -77,25 +77,5 @@ public class AutoLogMethodInterceptor implements MethodInterceptor {
             throw throwable;
         }
     }
-
-    /**
-     * 获取当前方法信息
-     *
-     * @param methodInvocation 切点
-     * @return 方法
-     * @since 0.0.3
-     */
-    private Method getCurrentMethod(MethodInvocation methodInvocation) {
-        try {
-            // 方法声明
-            Method method = methodInvocation.getMethod();
-
-            Object target = methodInvocation.getThis();
-            return target.getClass().getMethod(method.getName(), method.getParameterTypes());
-        } catch (NoSuchMethodException e) {
-            throw new CommonRuntimeException(e);
-        }
-    }
-
 
 }

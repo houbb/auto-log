@@ -12,12 +12,14 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
         <module>auto-log-test</module>
         <module>auto-log-spring</module>
+        <module>auto-log-springboot-starter</module>
+        <module>auto-log-test2</module>
     </modules>
 
     <properties>
@@ -37,16 +39,14 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.1.105</heaven.version>
+        <heaven.version>0.1.112</heaven.version>
         <log-integration.version>1.1.8</log-integration.version>
-        <aop.version>0.0.1</aop.version>
+        <aop.version>0.0.3</aop.version>
+        <test.version>0.0.1</test.version>
 
         <!--============================== OTHER ==============================-->
         <junit.version>4.12</junit.version>
-        <aopalliance.version>1.0</aopalliance.version>
-        <cglib.version>3.1</cglib.version>
-        <spring.version>4.3.24.RELEASE</spring.version>
-        <aspectj.version>1.8.5</aspectj.version>
+        <spring-boot.version>1.5.22.RELEASE</spring-boot.version>
     </properties>
 
     <dependencyManagement>
@@ -67,6 +67,11 @@
                 <artifactId>auto-log-spring</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>auto-log-springboot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!--============================== INTER ==============================-->
             <dependency>
@@ -81,47 +86,25 @@
             </dependency>
             <dependency>
                 <groupId>com.github.houbb</groupId>
-                <artifactId>aop</artifactId>
+                <artifactId>aop-core</artifactId>
                 <version>${aop.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>aop-spring</artifactId>
+                <version>${aop.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>test-spring</artifactId>
+                <version>${test.version}</version>
             </dependency>
 
             <!--============================== OTHER ==============================-->
-
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <optional>true</optional>
-                <scope>test</scope>
-            </dependency>
-
-            <!--spring-->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>${aspectj.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjrt</artifactId>
-                <version>${aspectj.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

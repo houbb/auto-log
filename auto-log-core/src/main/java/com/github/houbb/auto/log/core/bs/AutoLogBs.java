@@ -1,6 +1,6 @@
 package com.github.houbb.auto.log.core.bs;
 
-import com.github.houbb.aop.util.ProxyUtil;
+import com.github.houbb.aop.core.util.ProxyUtil;
 import com.github.houbb.auto.log.core.support.interceptor.AutoLogMethodInterceptor;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import org.aopalliance.intercept.MethodInterceptor;

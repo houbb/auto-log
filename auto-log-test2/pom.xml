@@ -9,25 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>auto-log-spring</artifactId>
+    <artifactId>auto-log-test2</artifactId>
 
     <dependencies>
-        <!--============================== SELF ==============================-->
         <dependency>
             <groupId>com.github.houbb</groupId>
-            <artifactId>auto-log-annotation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>auto-log-core</artifactId>
+            <artifactId>auto-log-springboot-starter</artifactId>
         </dependency>
 
-        <!--============================== OTHER ==============================-->
         <dependency>
             <groupId>com.github.houbb</groupId>
-            <artifactId>aop-spring</artifactId>
+            <artifactId>test-spring</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>

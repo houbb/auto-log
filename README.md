@@ -23,6 +23,8 @@
 
 - 支持注解式，完美整合 spring
 
+- 支持整合 spring-boot
+
 - 支持慢日志阈值指定，耗时，入参，出参等常见属性指定
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
@@ -35,7 +37,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.0.4</version>
+    <version>${最新版本}</version>
 </dependency>
 ```
 
@@ -141,9 +143,9 @@ public class SpringServiceTest {
 
 - [ ] 添加对于非接口的支持 CGLIB
 
-- [ ] 添加 spring-boot-starter
-
 - [ ] 注解特性拓展
+
+是否可以支持自定义 handler
 
 - [ ] jvm-sandbox 特性
 
