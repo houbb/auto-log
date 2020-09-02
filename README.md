@@ -140,6 +140,34 @@ public class SpringServiceTest {
 五月 30, 2020 12:17:51 下午 org.springframework.context.support.GenericApplicationContext doClose
 ```
 
+# springboot 整合使用
+
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>auto-log-springboot-starter</artifactId>
+    <version>最新版本</version>
+</dependency>
+```
+
+只需要引入 jar 即可，其他的什么都不用配置。
+
+使用方式和 spring 一致。
+
+## 测试
+
+```java
+@Autowired
+private UserService userService;
+
+@Test
+public void queryLogTest() {
+    userService.query("spring-boot");
+}
+```
+
 # 开源地址
 
 > Github: [https://github.com/houbb/auto-log](https://github.com/houbb/auto-log)
@@ -147,6 +175,14 @@ public class SpringServiceTest {
 > Gitee: [https://gitee.com/houbinbin/auto-log](https://gitee.com/houbinbin/auto-log)
 
 # Road-Map
+
+- [ ] 全局配置
+
+比如全局的慢日志阈值设置等
+
+- [ ] 支持类
+
+获取方法时，获取对应的类。
 
 - [ ] 注解特性拓展
 
