@@ -61,6 +61,7 @@ public class AutoLogAop {
      *
      * 相当于 MethodInterceptor
      * @param point 切点
+     * @param autoLog 日志参数
      * @return 结果
      * @throws Throwable 异常信息
      * @since 0.0.3

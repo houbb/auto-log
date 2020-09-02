@@ -140,6 +140,12 @@ public class SpringServiceTest {
 五月 30, 2020 12:17:51 下午 org.springframework.context.support.GenericApplicationContext doClose
 ```
 
+# 开源地址
+
+> Github: [https://github.com/houbb/auto-log](https://github.com/houbb/auto-log)
+
+> Gitee: [https://gitee.com/houbinbin/auto-log](https://gitee.com/houbinbin/auto-log)
+
 # Road-Map
 
 - [ ] 注解特性拓展
