@@ -1,13 +1,20 @@
 package com.github.houbb.auto.log.spring.aop;
 
+import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.heaven.response.exception.CommonRuntimeException;
+import com.github.houbb.log.integration.core.Log;
+import com.github.houbb.log.integration.core.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * 这是一种写法
@@ -15,9 +22,12 @@ import java.lang.reflect.Method;
  * @author binbin.hou
  * @since 0.0.3
  */
-//@Aspect
-//@Component
+@Aspect
+@Component
+@EnableAspectJAutoProxy
 public class AutoLogAop {
+
+    private static final Log LOG = LogFactory.getLog(AutoLogAop.class);
 
     /**
      *
@@ -55,10 +65,47 @@ public class AutoLogAop {
      * @throws Throwable 异常信息
      * @since 0.0.3
      */
-    @Around("autoLogPointcut()")
-    public Object around(ProceedingJoinPoint point) throws Throwable {
-        // TODO
-        return null;
+    @Around("@annotation(autoLog)")
+    public Object around(ProceedingJoinPoint point, AutoLog autoLog) throws Throwable {
+        Method method = getCurrentMethod(point);
+        String methodName = method.getName();
+        try {
+            final long startMills = System.currentTimeMillis();
+            //1. 是否输入入参
+            if (autoLog.param()) {
+                LOG.info("{} param is {}.", methodName, Arrays.toString(point.getArgs()));
+            }
+
+            //2. 执行方法
+            Object result = point.proceed();
+
+            //3. 结果
+            if (autoLog.result()) {
+                LOG.info("{} result is {}.", methodName, result);
+            }
+            //3.1 耗时
+            final long slowThreshold = autoLog.slowThresholdMills();
+            if (autoLog.costTime() || slowThreshold >= 0) {
+                final long endMills = System.currentTimeMillis();
+                long costTime = endMills - startMills;
+                if (autoLog.costTime()) {
+                    LOG.info("{} cost time is {}ms.", methodName, costTime);
+                }
+
+                //3.2 慢日志
+                if (slowThreshold >= 0 && costTime >= slowThreshold) {
+                    LOG.warn("{} is slow log, {}ms >= {}ms.", methodName, costTime, slowThreshold);
+                }
+            }
+
+            return result;
+        } catch (Throwable e) {
+            if(autoLog.exception()) {
+                LOG.error("{} meet ex.", methodName, e);
+            }
+
+            throw e;
+        }
     }
 
     /**

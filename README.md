@@ -25,7 +25,7 @@
 
 - 支持整合 spring-boot
 
-- 支持慢日志阈值指定，耗时，入参，出参等常见属性指定
+- 支持慢日志阈值指定，耗时，入参，出参，异常信息等常见属性指定
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService {
 | param | boolean | true | 是否打印入参 |
 | result | boolean | true | 是否打印出参 |
 | costTime | boolean | false | 是否打印耗时 |
+| exception | boolean | true | 是否打印异常 |
 | slowThresholdMills | long | -1 | 当这个值大于等于 0 时，且耗时超过配置值，会输出慢日志 |
 
 # spring 整合使用
@@ -140,8 +141,6 @@ public class SpringServiceTest {
 ```
 
 # Road-Map
-
-- [ ] 添加对于非接口的支持 CGLIB
 
 - [ ] 注解特性拓展
 

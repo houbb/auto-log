@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @author binbin.hou
  * @since 0.0.3
  */
-@Component
+//@Component
 public class AutoLogMethodAdvisor extends AbstractPointcutAdvisor {
 
     /**

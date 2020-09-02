@@ -56,6 +56,13 @@ public @interface AutoLog {
     boolean costTime() default false;
 
     /**
+     * 是否输出异常信息
+     * @return 是否
+     * @since 0.0.6
+     */
+    boolean exception() default true;
+
+    /**
      * 慢日志阈值
      *
      * 当值小于 0 时，不进行慢日志统计。

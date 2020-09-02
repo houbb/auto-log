@@ -25,4 +25,9 @@ public class SpringServiceTest {
         userService.queryLog("1");
     }
 
+    @Test
+    public void queryTest() {
+        userService.query("1");
+    }
+
 }

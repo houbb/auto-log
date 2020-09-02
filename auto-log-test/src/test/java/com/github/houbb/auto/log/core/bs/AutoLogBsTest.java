@@ -1,5 +1,6 @@
 package com.github.houbb.auto.log.core.bs;
 
+import com.github.houbb.auto.log.core.support.proxy.AutoLogProxy;
 import com.github.houbb.auto.log.test.service.UserService;
 import com.github.houbb.auto.log.test.service.impl.MenuServiceImpl;
 import com.github.houbb.auto.log.test.service.impl.UserServiceImpl;
@@ -13,7 +14,7 @@ public class AutoLogBsTest {
 
     @Test
     public void proxyTest() {
-        UserService userService = AutoLogBs.newInstance().proxy(new UserServiceImpl());
+        UserService userService = AutoLogProxy.getProxy(new UserServiceImpl());
 
         userService.queryLog("1");
     }
@@ -24,7 +25,7 @@ public class AutoLogBsTest {
      */
     @Test
     public void proxyTest2() {
-        MenuServiceImpl service = AutoLogBs.newInstance().proxy(new MenuServiceImpl());
+        MenuServiceImpl service =  AutoLogProxy.getProxy(new MenuServiceImpl());
 
         service.query("1");
     }
