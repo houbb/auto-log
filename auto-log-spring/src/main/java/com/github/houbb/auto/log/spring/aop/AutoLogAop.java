@@ -5,14 +5,20 @@ import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
 import com.github.houbb.auto.log.core.core.IAutoLogContext;
 import com.github.houbb.auto.log.spring.context.SpringAopAutoLogContext;
+import com.github.houbb.heaven.response.exception.CommonRuntimeException;
 import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
 
 /**
  * 这是一种写法
@@ -60,19 +66,41 @@ public class AutoLogAop {
      *
      * 相当于 MethodInterceptor
      * @param point 切点
-     * @param autoLog 日志参数
      * @return 结果
      * @throws Throwable 异常信息
      * @since 0.0.3
      */
-    @Around("@annotation(autoLog) || @annotation(traceId)")
-    public Object around(ProceedingJoinPoint point, AutoLog autoLog, TraceId traceId) throws Throwable {
+    @Around("autoLogPointcut()")
+    public Object around(ProceedingJoinPoint point) throws Throwable {
+        Method method = getCurrentMethod(point);
+        AutoLog autoLog = AnnotationUtils.getAnnotation(method, AutoLog.class);
+        TraceId traceId = AnnotationUtils.getAnnotation(method, TraceId.class);
+
         IAutoLogContext logContext = SpringAopAutoLogContext.newInstance()
+                .method(method)
                 .autoLog(autoLog)
                 .traceId(traceId)
                 .point(point);
 
         return AutoLogBs.newInstance().context(logContext).autoLog();
+    }
+
+    /**
+     * 获取当前方法信息
+     *
+     * @param point 切点
+     * @return 方法
+     * @since 0.0.7
+     */
+    private Method getCurrentMethod(ProceedingJoinPoint point) {
+        try {
+            Signature sig = point.getSignature();
+            MethodSignature msig = (MethodSignature) sig;
+            Object target = point.getTarget();
+            return target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
+        } catch (NoSuchMethodException e) {
+            throw new CommonRuntimeException(e);
+        }
     }
 
 }

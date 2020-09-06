@@ -8,6 +8,7 @@ import com.github.houbb.auto.log.core.core.IAutoLogContext;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
 import com.github.houbb.id.api.Id;
+import com.github.houbb.id.core.core.Ids;
 import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
 
@@ -36,10 +37,9 @@ public class SimpleAutoLog implements IAutoLog {
         TraceIdBs traceIdBs = null;
         if(traceId != null) {
             Class<? extends Id> idClass = traceId.id();
-            Id id = ClassUtil.newInstance(idClass);
+            Id id = getIdInstance(idClass);
 
             traceIdBs = TraceIdBs.newInstance().id(id);
-
             if(traceId.putIfAbsent()) {
                 traceIdBs.putIfAbsent();
             } else {
@@ -114,6 +114,19 @@ public class SimpleAutoLog implements IAutoLog {
     }
 
     /**
+     * 新建对象实例
+     * @param idClass id 类
+     * @return 实现
+     * @since 0.0.8
+     */
+    private Id getIdInstance(final Class<? extends Id> idClass) {
+        if(Id.class.equals(idClass)) {
+            return Ids.uuid32();
+        }
+        return ClassUtil.newInstance(idClass);
+    }
+
+    /**
      * 获取方法描述
      * @param method 方法
      * @param autoLog 注解
@@ -149,7 +162,7 @@ public class SimpleAutoLog implements IAutoLog {
             return StringUtil.EMPTY;
         }
 
-        return String.format("[%s]", traceId);
+        return String.format("[%s] ", traceId);
     }
 
 }

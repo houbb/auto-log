@@ -1,6 +1,7 @@
 package com.github.houbb.auto.log.test.service.impl;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
+import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.test.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,13 @@ public class UserServiceImpl implements UserService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    @AutoLog
+    @TraceId
+    public String traceId(String id) {
+        return id+"-1";
     }
 
 }

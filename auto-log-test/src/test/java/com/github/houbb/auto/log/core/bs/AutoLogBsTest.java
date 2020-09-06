@@ -30,4 +30,15 @@ public class AutoLogBsTest {
         service.query("1");
     }
 
+    /**
+     * 接口测试 TraceId
+     * @since 0.0.8
+     */
+    @Test
+    public void proxyTestTraceId() {
+        UserService service =  AutoLogProxy.getProxy(new UserServiceImpl());
+
+        service.traceId("1");
+    }
+
 }

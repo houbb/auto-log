@@ -18,4 +18,11 @@ public interface UserService {
      */
     String slowLog(final String id);
 
+    /**
+     * @since 0.0.8
+     * @param id id
+     * @return 结果
+     */
+    String traceId(String id);
+
 }

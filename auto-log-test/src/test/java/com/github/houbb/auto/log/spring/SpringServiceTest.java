@@ -30,4 +30,9 @@ public class SpringServiceTest {
         userService.query("1");
     }
 
+    @Test
+    public void queryTraceIdTest() {
+        userService.traceId("1");
+    }
+
 }

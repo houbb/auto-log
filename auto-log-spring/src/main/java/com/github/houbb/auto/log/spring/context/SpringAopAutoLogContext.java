@@ -3,10 +3,7 @@ package com.github.houbb.auto.log.spring.context;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.core.core.IAutoLogContext;
-import com.github.houbb.heaven.response.exception.CommonRuntimeException;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
-import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Method;
 
@@ -85,9 +82,13 @@ public class SpringAopAutoLogContext implements IAutoLogContext {
         return method;
     }
 
+    public SpringAopAutoLogContext method(Method method) {
+        this.method = method;
+        return this;
+    }
+
     public SpringAopAutoLogContext point(ProceedingJoinPoint point) {
         this.point = point;
-        this.method = getCurrentMethod(point);
         this.params = point.getArgs();
         return this;
     }
@@ -95,24 +96,6 @@ public class SpringAopAutoLogContext implements IAutoLogContext {
     @Override
     public Object process() throws Throwable {
         return point.proceed();
-    }
-
-    /**
-     * 获取当前方法信息
-     *
-     * @param point 切点
-     * @return 方法
-     * @since 0.0.7
-     */
-    private Method getCurrentMethod(ProceedingJoinPoint point) {
-        try {
-            Signature sig = point.getSignature();
-            MethodSignature msig = (MethodSignature) sig;
-            Object target = point.getTarget();
-            return target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
-        } catch (NoSuchMethodException e) {
-            throw new CommonRuntimeException(e);
-        }
     }
 
 }
