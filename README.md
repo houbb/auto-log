@@ -27,6 +27,8 @@
 
 - 支持慢日志阈值指定，耗时，入参，出参，异常信息等常见属性指定
 
+- 支持 traceId 特性
+
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
 # 快速开始
@@ -85,7 +87,37 @@ public class UserServiceImpl implements UserService {
 }
 ```
 
+## TraceId 的例子
+
+### 代码
+
+```java
+UserService service =  AutoLogProxy.getProxy(new UserServiceImpl());
+service.traceId("1");
+```
+
+其中 traceId 方法如下：
+
+```java
+@AutoLog
+@TraceId
+public String traceId(String id) {
+    return id+"-1";
+}
+```
+
+### 测试效果
+
+```
+信息: [ba7ddaded5a644e5a58fbd276b6657af] <traceId>入参: [1].
+信息: [ba7ddaded5a644e5a58fbd276b6657af] <traceId>出参：1-1.
+```
+
+其中 ba7ddaded5a644e5a58fbd276b6657af 就是对应的 traceId，可以贯穿整个 thread 周期，便于我们日志查看。
+
 # 注解说明
+
+## @AutoLog
 
 核心注解 `@AutoLog` 的属性说明如下：
 
@@ -97,6 +129,15 @@ public class UserServiceImpl implements UserService {
 | exception | boolean | true | 是否打印异常 |
 | slowThresholdMills | long | -1 | 当这个值大于等于 0 时，且耗时超过配置值，会输出慢日志 |
 | description | string |"" | 方法描述，默认选择方法名称 |
+
+## @TraceId
+
+`@TraceId` 放在需要设置 traceId 的方法上，比如 Controller 层，mq 的消费者，rpc 请求的接受者等。
+
+| 属性 | 类型 | 默认值 | 说明 |
+|:--|:--|:--|:--|
+| id | Class | 默认为 uuid | traceId 的实现策略 |
+| putIfAbsent | boolean | false | 是否在当前线程没有值的时候才设置值 |
 
 # spring 整合使用
 
@@ -176,8 +217,6 @@ public void queryLogTest() {
 > Gitee: [https://gitee.com/houbinbin/auto-log](https://gitee.com/houbinbin/auto-log)
 
 # Road-Map
-
-- [ ] TraceId 特性
 
 - [ ] 全局配置
 
