@@ -1,6 +1,8 @@
 package com.github.houbb.auto.log.core.support.proxy.cglib;
 
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
+import com.github.houbb.auto.log.core.core.IAutoLogContext;
+import com.github.houbb.auto.log.core.core.impl.SimpleAutoLogContext;
 import com.github.houbb.auto.log.core.support.proxy.IAutoLogProxy;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -27,7 +29,9 @@ public class CglibProxy implements MethodInterceptor, IAutoLogProxy {
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-        return AutoLogBs.newInstance().method(method).params(objects).target(target).autoLog();
+        IAutoLogContext context = SimpleAutoLogContext.newInstance()
+                .method(method).params(objects).target(target);
+        return AutoLogBs.newInstance().context(context).autoLog();
     }
 
     @Override

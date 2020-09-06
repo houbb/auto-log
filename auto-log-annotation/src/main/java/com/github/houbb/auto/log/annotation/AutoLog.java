@@ -72,4 +72,11 @@ public @interface AutoLog {
      */
     long slowThresholdMills() default -1;
 
+    /**
+     * 方法描述
+     * @return 方法描述
+     * @since 0.0.7
+     */
+    String description() default "";
+
 }

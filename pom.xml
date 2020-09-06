@@ -12,13 +12,13 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.7</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
-        <module>auto-log-test</module>
         <module>auto-log-spring</module>
         <module>auto-log-springboot-starter</module>
+        <module>auto-log-test</module>
         <module>auto-log-test2</module>
     </modules>
 

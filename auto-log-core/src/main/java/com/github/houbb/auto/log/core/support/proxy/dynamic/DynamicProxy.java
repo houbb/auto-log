@@ -6,6 +6,8 @@
 package com.github.houbb.auto.log.core.support.proxy.dynamic;
 
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
+import com.github.houbb.auto.log.core.core.IAutoLogContext;
+import com.github.houbb.auto.log.core.core.impl.SimpleAutoLogContext;
 import com.github.houbb.auto.log.core.support.proxy.IAutoLogProxy;
 
 import java.lang.reflect.InvocationHandler;
@@ -50,8 +52,9 @@ public class DynamicProxy implements InvocationHandler, IAutoLogProxy {
     @Override
     @SuppressWarnings("all")
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        //2. 返回以前的结果
-        return AutoLogBs.newInstance().method(method).params(args).target(target).autoLog();
+        IAutoLogContext context = SimpleAutoLogContext.newInstance()
+                .method(method).params(args).target(target);
+        return AutoLogBs.newInstance().context(context).autoLog();
     }
 
     @Override

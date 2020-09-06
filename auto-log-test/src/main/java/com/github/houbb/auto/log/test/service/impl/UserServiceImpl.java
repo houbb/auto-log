@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @AutoLog
+    @AutoLog(description = "查询日志")
     public String queryLog(String id) {
         return this.query(id);
     }
