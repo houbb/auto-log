@@ -96,6 +96,7 @@ public class UserServiceImpl implements UserService {
 | costTime | boolean | false | 是否打印耗时 |
 | exception | boolean | true | 是否打印异常 |
 | slowThresholdMills | long | -1 | 当这个值大于等于 0 时，且耗时超过配置值，会输出慢日志 |
+| description | string |"" | 方法描述，默认选择方法名称 |
 
 # spring 整合使用
 
@@ -175,6 +176,8 @@ public void queryLogTest() {
 > Gitee: [https://gitee.com/houbinbin/auto-log](https://gitee.com/houbinbin/auto-log)
 
 # Road-Map
+
+- [ ] TraceId 特性
 
 - [ ] 全局配置
 

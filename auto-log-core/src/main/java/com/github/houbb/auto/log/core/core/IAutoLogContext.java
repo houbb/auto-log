@@ -37,6 +37,7 @@ public interface IAutoLogContext {
      * 方法执行
      * @return 执行
      * @since 0.0.7
+     * @throws Throwable 异常信息
      */
     Object process() throws Throwable;
 
