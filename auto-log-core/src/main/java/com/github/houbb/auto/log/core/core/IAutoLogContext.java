@@ -1,6 +1,7 @@
 package com.github.houbb.auto.log.core.core;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
+import com.github.houbb.auto.log.annotation.TraceId;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,6 +19,13 @@ public interface IAutoLogContext {
      * @since 0.0.7
      */
     AutoLog autoLog();
+
+    /**
+     * 设置日志唯一标识的注解
+     * @return 日志唯一标识
+     * @since 0.0.8
+     */
+    TraceId traceId();
 
     /**
      * 参数信息

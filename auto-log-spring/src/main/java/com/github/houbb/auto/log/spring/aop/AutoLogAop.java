@@ -1,6 +1,7 @@
 package com.github.houbb.auto.log.spring.aop;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
+import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
 import com.github.houbb.auto.log.core.core.IAutoLogContext;
 import com.github.houbb.auto.log.spring.context.SpringAopAutoLogContext;
@@ -49,7 +50,8 @@ public class AutoLogAop {
      *
      * 不过考虑到使用者的熟练度，如果用户知道了自定义注解，自定义 aop 应该也不是问题。
      */
-    @Pointcut("@annotation(com.github.houbb.auto.log.annotation.AutoLog)")
+    @Pointcut("@annotation(com.github.houbb.auto.log.annotation.AutoLog) " +
+            "|| @annotation(com.github.houbb.auto.log.annotation.TraceId)")
     public void autoLogPointcut() {
     }
 
@@ -63,10 +65,11 @@ public class AutoLogAop {
      * @throws Throwable 异常信息
      * @since 0.0.3
      */
-    @Around("@annotation(autoLog)")
-    public Object around(ProceedingJoinPoint point, AutoLog autoLog) throws Throwable {
+    @Around("@annotation(autoLog) || @annotation(traceId)")
+    public Object around(ProceedingJoinPoint point, AutoLog autoLog, TraceId traceId) throws Throwable {
         IAutoLogContext logContext = SpringAopAutoLogContext.newInstance()
                 .autoLog(autoLog)
+                .traceId(traceId)
                 .point(point);
 
         return AutoLogBs.newInstance().context(logContext).autoLog();

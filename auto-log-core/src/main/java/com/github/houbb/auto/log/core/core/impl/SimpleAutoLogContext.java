@@ -1,9 +1,8 @@
 package com.github.houbb.auto.log.core.core.impl;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
+import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.core.core.IAutoLogContext;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -18,6 +17,12 @@ public class SimpleAutoLogContext implements IAutoLogContext {
      * @since 0.0.7
      */
     private AutoLog autoLog;
+
+    /**
+     * 日志标识注解
+     * @since 0.0.8
+     */
+    private TraceId traceId;
 
     /**
      * 参数信息
@@ -44,6 +49,11 @@ public class SimpleAutoLogContext implements IAutoLogContext {
     @Override
     public AutoLog autoLog() {
         return autoLog;
+    }
+
+    @Override
+    public TraceId traceId() {
+        return traceId;
     }
 
     public Object target() {
@@ -73,6 +83,7 @@ public class SimpleAutoLogContext implements IAutoLogContext {
     public SimpleAutoLogContext method(Method method) {
         this.method = method;
         this.autoLog = method.getAnnotation(AutoLog.class);
+        this.traceId = method.getAnnotation(TraceId.class);
 
         return this;
     }

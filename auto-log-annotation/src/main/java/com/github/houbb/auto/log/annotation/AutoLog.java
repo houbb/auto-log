@@ -79,4 +79,11 @@ public @interface AutoLog {
      */
     String description() default "";
 
+    /**
+     * 是否显示 traceId 信息
+     * @return 是否
+     * @since 0.0.8
+     */
+    boolean traceId() default true;
+
 }

@@ -1,10 +1,13 @@
 package com.github.houbb.auto.log.core.core.impl;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
+import com.github.houbb.auto.log.annotation.TraceId;
+import com.github.houbb.auto.log.core.bs.TraceIdBs;
 import com.github.houbb.auto.log.core.core.IAutoLog;
 import com.github.houbb.auto.log.core.core.IAutoLogContext;
-import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
+import com.github.houbb.id.api.Id;
 import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
 
@@ -28,27 +31,52 @@ public class SimpleAutoLog implements IAutoLog {
      */
     @Override
     public Object autoLog(IAutoLogContext context) throws Throwable {
-        AutoLog autoLog = context.autoLog();
-        if(autoLog == null) {
-            return context.process();
+        //1. 日志唯一标识
+        TraceId traceId = context.traceId();
+        TraceIdBs traceIdBs = null;
+        if(traceId != null) {
+            Class<? extends Id> idClass = traceId.id();
+            Id id = ClassUtil.newInstance(idClass);
+
+            traceIdBs = TraceIdBs.newInstance().id(id);
+
+            if(traceId.putIfAbsent()) {
+                traceIdBs.putIfAbsent();
+            } else {
+                traceIdBs.put();
+            }
         }
 
+        // 日志输出部分
+        AutoLog autoLog = context.autoLog();
         final long startMills = System.currentTimeMillis();
         Method method = context.method();
         String description = getMethodDescription(method, autoLog);
         try {
+            if(autoLog == null) {
+                return context.process();
+            }
+
+            String traceIdBefore = getTraceId(autoLog);
+
             //1. 是否输入入参
             if (autoLog.param()) {
                 Object[] params = context.params();
-                LOG.info("<{}>入参: {}.", description, Arrays.toString(params));
+                String paramsLog = String.format("<%s>入参: %s.",
+                        description, Arrays.toString(params));
+                LOG.info(traceIdBefore + paramsLog);
             }
 
             //2. 执行结果
             Object result = context.process();
 
+            // 避免方法中设置
+            String traceIdAfter = getTraceId(autoLog);
+
             //3. 结果
             if (autoLog.result()) {
-                LOG.info("<{}>出参：{}.", description, result);
+                String resultLog = String.format("<%s>出参：%s.", description, result);
+                LOG.info(traceIdAfter+resultLog);
             }
 
             //3.1 耗时 & 慢日志
@@ -57,22 +85,31 @@ public class SimpleAutoLog implements IAutoLog {
                 final long endMills = System.currentTimeMillis();
                 long costTime = endMills - startMills;
                 if (autoLog.costTime()) {
-                    LOG.info("<{}>耗时：{}ms.", description, costTime);
+                    String costTimeLog = String.format("<%s>耗时：%sms.", description, costTime);
+                    LOG.info(traceIdAfter+costTimeLog);
                 }
 
                 //3.2 慢日志
                 if (slowThreshold >= 0 && costTime >= slowThreshold) {
-                    LOG.warn("<{}>慢日志, {}ms >= {}ms.", description, costTime, slowThreshold);
+                    String slowLog = String.format("<%s>慢日志, %sms >= %sms.",
+                            description, costTime, slowThreshold);
+                    LOG.warn(traceIdAfter+slowLog);
                 }
             }
 
             return result;
         } catch (Exception e) {
             if (autoLog.exception()) {
-                LOG.error("<{}>异常", description, e);
+                String errorLog = String.format("<%s>异常", description);
+                String traceIdError = getTraceId(autoLog);
+                LOG.error(traceIdError+errorLog, e);
             }
             // re throw
             throw new RuntimeException(e);
+        } finally {
+            if(traceIdBs != null) {
+                traceIdBs.removeTraceId();
+            }
         }
     }
 
@@ -84,12 +121,35 @@ public class SimpleAutoLog implements IAutoLog {
      * @since 0.0.7
      */
     private String getMethodDescription(Method method, AutoLog autoLog) {
+        if(autoLog == null) {
+            return method.getName();
+        }
+
         String description = autoLog.description();
         if(StringUtil.isNotEmpty(description)) {
             return description;
         }
 
         return method.getName();
+    }
+
+    /**
+     * 获取 traceId
+     * @param autoLog 日志注解
+     * @return 结果
+     * @since 0.0.8
+     */
+    private String getTraceId(AutoLog autoLog) {
+        if(!autoLog.traceId()) {
+            return StringUtil.EMPTY;
+        }
+
+        String traceId = TraceIdBs.get();
+        if(StringUtil.isEmpty(traceId)) {
+            return StringUtil.EMPTY;
+        }
+
+        return String.format("[%s]", traceId);
     }
 
 }

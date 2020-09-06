@@ -43,6 +43,7 @@
         <log-integration.version>1.1.8</log-integration.version>
         <aop.version>0.0.3</aop.version>
         <test.version>0.0.1</test.version>
+        <id.version>0.0.5</id.version>
 
         <!--============================== OTHER ==============================-->
         <junit.version>4.12</junit.version>
@@ -74,6 +75,17 @@
             </dependency>
 
             <!--============================== INTER ==============================-->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>id-api</artifactId>
+                <version>${id.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>id-core</artifactId>
+                <version>${id.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.github.houbb</groupId>
                 <artifactId>heaven</artifactId>

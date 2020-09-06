@@ -1,6 +1,7 @@
 package com.github.houbb.auto.log.spring.context;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
+import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.core.core.IAutoLogContext;
 import com.github.houbb.heaven.response.exception.CommonRuntimeException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -20,6 +21,12 @@ public class SpringAopAutoLogContext implements IAutoLogContext {
      * @since 0.0.7
      */
     private AutoLog autoLog;
+
+    /**
+     * 日志标识注解
+     * @since 0.0.8
+     */
+    private TraceId traceId;
 
     /**
      * 参数信息
@@ -55,6 +62,16 @@ public class SpringAopAutoLogContext implements IAutoLogContext {
 
     public SpringAopAutoLogContext autoLog(AutoLog autoLog) {
         this.autoLog = autoLog;
+        return this;
+    }
+
+    @Override
+    public TraceId traceId() {
+        return traceId;
+    }
+
+    public SpringAopAutoLogContext traceId(TraceId traceId) {
+        this.traceId = traceId;
         return this;
     }
 

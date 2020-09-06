@@ -11,5 +11,11 @@
 
     <artifactId>auto-log-annotation</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>id-api</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
