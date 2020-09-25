@@ -2,11 +2,10 @@ package com.github.houbb.auto.log.spring.aop;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.annotation.TraceId;
+import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
-import com.github.houbb.auto.log.core.core.IAutoLog;
-import com.github.houbb.auto.log.core.core.IAutoLogContext;
-import com.github.houbb.auto.log.spring.annotation.EnableAutoLog;
 import com.github.houbb.auto.log.spring.context.SpringAopAutoLogContext;
+import com.github.houbb.heaven.annotation.CommonEager;
 import com.github.houbb.heaven.response.exception.CommonRuntimeException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -20,9 +19,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  * 这是一种写法
@@ -34,29 +32,6 @@ import java.util.Map;
 @Component
 @EnableAspectJAutoProxy
 public class AutoLogAop {
-
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    /**
-     * 日志输出的实现类
-     * @since 0.0.9
-     */
-    private Class<? extends IAutoLog>[] autoLogs;
-
-    /**
-     * 初始化实现类
-     * @since 0.0.9
-     */
-    @PostConstruct
-    public void initAutoLogs() {
-        //获取自定义注解的配置的所有bean
-        final Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(EnableAutoLog.class);
-        for (Object bean : beansWithAnnotation.values()) {
-            final EnableAutoLog annotation = AnnotationUtils.findAnnotation(bean.getClass(), EnableAutoLog.class);
-            this.autoLogs = annotation.value();
-        }
-    }
 
     /**
      *
@@ -81,7 +56,9 @@ public class AutoLogAop {
      *
      * 不过考虑到使用者的熟练度，如果用户知道了自定义注解，自定义 aop 应该也不是问题。
      */
-    @Pointcut("@annotation(com.github.houbb.auto.log.annotation.AutoLog) " +
+    @Pointcut("@within(com.github.houbb.auto.log.annotation.AutoLog)" +
+            "|| @within(com.github.houbb.auto.log.annotation.TraceId)" +
+            "|| @annotation(com.github.houbb.auto.log.annotation.AutoLog)" +
             "|| @annotation(com.github.houbb.auto.log.annotation.TraceId)")
     public void autoLogPointcut() {
     }
@@ -90,6 +67,9 @@ public class AutoLogAop {
      * 执行核心方法
      *
      * 相当于 MethodInterceptor
+     *
+     * 优先级：方法 > 类
+     *
      * @param point 切点
      * @return 结果
      * @throws Throwable 异常信息
@@ -101,22 +81,23 @@ public class AutoLogAop {
         AutoLog autoLog = AnnotationUtils.getAnnotation(method, AutoLog.class);
         TraceId traceId = AnnotationUtils.getAnnotation(method, TraceId.class);
 
-        // 分开实现
-        Object result = null;
-        for(Class<? extends IAutoLog> autoLogClass : autoLogs) {
-            IAutoLogContext logContext = SpringAopAutoLogContext.newInstance()
-                    .method(method)
-                    .autoLog(autoLog)
-                    .traceId(traceId)
-                    .point(point);
-
-            result = AutoLogBs.newInstance()
-                    .autoLogClass(autoLogClass)
-                    .context(logContext).execute();
+        //获取当前类注解信息
+        if(autoLog == null) {
+            autoLog = getClassAnnotation(point, AutoLog.class);
+        }
+        if(traceId == null) {
+            traceId = getClassAnnotation(point, TraceId.class);
         }
 
-        // 以最后一个结果为准
-        return result;
+        IAutoLogContext logContext = SpringAopAutoLogContext.newInstance()
+                .method(method)
+                .autoLog(autoLog)
+                .traceId(traceId)
+                .point(point);
+
+        return AutoLogBs.newInstance()
+                .context(logContext)
+                .execute();
     }
 
     /**
@@ -126,6 +107,7 @@ public class AutoLogAop {
      * @return 方法
      * @since 0.0.7
      */
+    @CommonEager
     private Method getCurrentMethod(ProceedingJoinPoint point) {
         try {
             Signature sig = point.getSignature();
@@ -135,6 +117,19 @@ public class AutoLogAop {
         } catch (NoSuchMethodException e) {
             throw new CommonRuntimeException(e);
         }
+    }
+
+    /**
+     * 获取当前类指定的注解
+     *
+     * @param point 切点
+     * @return 方法
+     * @since 0.0.10
+     */
+    @CommonEager
+    private <A extends Annotation> A getClassAnnotation(ProceedingJoinPoint point, Class<A> annotationType) {
+        Class<?> targetClass = point.getTarget().getClass();
+        return targetClass.getAnnotation(annotationType);
     }
 
 }

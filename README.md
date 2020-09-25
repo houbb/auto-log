@@ -29,11 +29,13 @@
 
 - 支持 traceId 特性
 
+- 支持类级别定义注解
+
 ## 变更日志
 
-- v0.0.9 变化
+- v0.0.10 变化
 
-支持自定义日志输出策略
+支持类级别定义注解
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
@@ -129,12 +131,14 @@ public String traceId(String id) {
 
 | 属性 | 类型 | 默认值 | 说明 |
 |:--|:--|:--|:--|
+| enable | boolean | true | 是否启用 |
 | param | boolean | true | 是否打印入参 |
 | result | boolean | true | 是否打印出参 |
 | costTime | boolean | false | 是否打印耗时 |
 | exception | boolean | true | 是否打印异常 |
 | slowThresholdMills | long | -1 | 当这个值大于等于 0 时，且耗时超过配置值，会输出慢日志 |
 | description | string |"" | 方法描述，默认选择方法名称 |
+| interceptor | Class[] | 默认实现 | 拦截器实现，支持指定多个和自定义 |
 
 ## @TraceId
 
@@ -144,6 +148,8 @@ public String traceId(String id) {
 |:--|:--|:--|:--|
 | id | Class | 默认为 uuid | traceId 的实现策略 |
 | putIfAbsent | boolean | false | 是否在当前线程没有值的时候才设置值 |
+| enable | boolean | true | 是否启用 |
+| interceptor | Class[] | 默认实现 | 拦截器实现，支持指定多个和自定义 |
 
 # spring 整合使用
 
@@ -279,17 +285,13 @@ public class MyAutoLog implements IAutoLog {
 
 # Road-Map
 
+- [ ] 优化日志中的方法路径名称
+
+考虑补全对应的类信息
+
 - [ ] 全局配置
 
 比如全局的慢日志阈值设置等
-
-- [ ] 支持类注解
-
-获取方法时，获取对应的类。
-
-- [ ] 注解特性拓展
-
-是否可以支持自定义 handler
 
 - [ ] jvm-sandbox 特性
 

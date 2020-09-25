@@ -1,9 +1,8 @@
-package com.github.houbb.auto.log.core.core;
+package com.github.houbb.auto.log.api;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.annotation.TraceId;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**

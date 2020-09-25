@@ -2,6 +2,7 @@ package com.github.houbb.auto.log.core.bs;
 
 import com.github.houbb.auto.log.core.support.proxy.AutoLogProxy;
 import com.github.houbb.auto.log.test.service.UserService;
+import com.github.houbb.auto.log.test.service.impl.ClassAnnotationService;
 import com.github.houbb.auto.log.test.service.impl.MenuServiceImpl;
 import com.github.houbb.auto.log.test.service.impl.UserServiceImpl;
 import org.junit.Test;
@@ -39,6 +40,18 @@ public class AutoLogBsTest {
         UserService service =  AutoLogProxy.getProxy(new UserServiceImpl());
 
         service.traceId("1");
+    }
+
+    @Test
+    public void classEnableTest() {
+        ClassAnnotationService annotationService = AutoLogProxy.getProxy(new ClassAnnotationService());
+        annotationService.enable();
+    }
+
+    @Test
+    public void classDisableTest() {
+        ClassAnnotationService annotationService = AutoLogProxy.getProxy(new ClassAnnotationService());
+        annotationService.disable();
     }
 
 }

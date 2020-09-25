@@ -1,4 +1,4 @@
-package com.github.houbb.auto.log.core.core;
+package com.github.houbb.auto.log.api;
 
 /**
  * @author binbin.hou

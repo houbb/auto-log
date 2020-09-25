@@ -1,7 +1,7 @@
 package com.github.houbb.auto.log.core.bs;
 
-import com.github.houbb.auto.log.core.core.IAutoLog;
-import com.github.houbb.auto.log.core.core.IAutoLogContext;
+import com.github.houbb.auto.log.api.IAutoLog;
+import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.core.core.impl.SimpleAutoLog;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassUtil;

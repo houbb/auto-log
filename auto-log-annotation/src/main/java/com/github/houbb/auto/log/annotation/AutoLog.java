@@ -1,5 +1,8 @@
 package com.github.houbb.auto.log.annotation;
 
+import com.github.houbb.auto.log.api.IAutoLog;
+import com.github.houbb.auto.log.api.IAutoLogInterceptor;
+
 import java.lang.annotation.*;
 
 /**
@@ -26,6 +29,9 @@ import java.lang.annotation.*;
  *
  * 添加方法描述参数。
  *
+ *
+ * 配置优先级：类注解 < 方法注解
+ *
  * @author binbin.hou
  * @since 0.0.1
  */
@@ -33,6 +39,13 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface AutoLog {
+
+    /**
+     * 是否启用
+     * @return 结果
+     * @since 0.0.10
+     */
+    boolean enable() default true;
 
     /**
      * 输出参数
@@ -85,5 +98,11 @@ public @interface AutoLog {
      * @since 0.0.8
      */
     boolean traceId() default true;
+
+    /**
+     * 具体的拦截器实现
+     * @since 0.0.10
+     */
+    Class<? extends IAutoLogInterceptor>[] interceptor() default {IAutoLogInterceptor.class};
 
 }

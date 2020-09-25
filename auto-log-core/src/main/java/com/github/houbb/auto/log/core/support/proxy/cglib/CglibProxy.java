@@ -1,7 +1,7 @@
 package com.github.houbb.auto.log.core.support.proxy.cglib;
 
+import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
-import com.github.houbb.auto.log.core.core.IAutoLogContext;
 import com.github.houbb.auto.log.core.core.impl.SimpleAutoLogContext;
 import com.github.houbb.auto.log.core.support.proxy.IAutoLogProxy;
 import net.sf.cglib.proxy.Enhancer;

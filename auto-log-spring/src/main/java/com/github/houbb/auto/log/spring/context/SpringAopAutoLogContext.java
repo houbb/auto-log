@@ -2,7 +2,7 @@ package com.github.houbb.auto.log.spring.context;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.annotation.TraceId;
-import com.github.houbb.auto.log.core.core.IAutoLogContext;
+import com.github.houbb.auto.log.api.IAutoLogContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.lang.reflect.Method;
