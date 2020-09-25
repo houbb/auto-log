@@ -31,7 +31,7 @@ public class CglibProxy implements MethodInterceptor, IAutoLogProxy {
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         IAutoLogContext context = SimpleAutoLogContext.newInstance()
                 .method(method).params(objects).target(target);
-        return AutoLogBs.newInstance().context(context).autoLog();
+        return AutoLogBs.newInstance().context(context).execute();
     }
 
     @Override

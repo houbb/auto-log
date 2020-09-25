@@ -54,7 +54,7 @@ public class DynamicProxy implements InvocationHandler, IAutoLogProxy {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         IAutoLogContext context = SimpleAutoLogContext.newInstance()
                 .method(method).params(args).target(target);
-        return AutoLogBs.newInstance().context(context).autoLog();
+        return AutoLogBs.newInstance().context(context).execute();
     }
 
     @Override

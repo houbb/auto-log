@@ -3,22 +3,26 @@ package com.github.houbb.auto.log.spring.aop;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
+import com.github.houbb.auto.log.core.core.IAutoLog;
 import com.github.houbb.auto.log.core.core.IAutoLogContext;
+import com.github.houbb.auto.log.spring.annotation.EnableAutoLog;
 import com.github.houbb.auto.log.spring.context.SpringAopAutoLogContext;
 import com.github.houbb.heaven.response.exception.CommonRuntimeException;
-import com.github.houbb.log.integration.core.Log;
-import com.github.houbb.log.integration.core.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * 这是一种写法
@@ -31,7 +35,28 @@ import java.lang.reflect.Method;
 @EnableAspectJAutoProxy
 public class AutoLogAop {
 
-    private static final Log LOG = LogFactory.getLog(AutoLogAop.class);
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    /**
+     * 日志输出的实现类
+     * @since 0.0.9
+     */
+    private Class<? extends IAutoLog>[] autoLogs;
+
+    /**
+     * 初始化实现类
+     * @since 0.0.9
+     */
+    @PostConstruct
+    public void initAutoLogs() {
+        //获取自定义注解的配置的所有bean
+        final Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(EnableAutoLog.class);
+        for (Object bean : beansWithAnnotation.values()) {
+            final EnableAutoLog annotation = AnnotationUtils.findAnnotation(bean.getClass(), EnableAutoLog.class);
+            this.autoLogs = annotation.value();
+        }
+    }
 
     /**
      *
@@ -76,13 +101,22 @@ public class AutoLogAop {
         AutoLog autoLog = AnnotationUtils.getAnnotation(method, AutoLog.class);
         TraceId traceId = AnnotationUtils.getAnnotation(method, TraceId.class);
 
-        IAutoLogContext logContext = SpringAopAutoLogContext.newInstance()
-                .method(method)
-                .autoLog(autoLog)
-                .traceId(traceId)
-                .point(point);
+        // 分开实现
+        Object result = null;
+        for(Class<? extends IAutoLog> autoLogClass : autoLogs) {
+            IAutoLogContext logContext = SpringAopAutoLogContext.newInstance()
+                    .method(method)
+                    .autoLog(autoLog)
+                    .traceId(traceId)
+                    .point(point);
 
-        return AutoLogBs.newInstance().context(logContext).autoLog();
+            result = AutoLogBs.newInstance()
+                    .autoLogClass(autoLogClass)
+                    .context(logContext).execute();
+        }
+
+        // 以最后一个结果为准
+        return result;
     }
 
     /**

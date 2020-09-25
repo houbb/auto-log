@@ -29,6 +29,12 @@
 
 - 支持 traceId 特性
 
+## 变更日志
+
+- v0.0.9 变化
+
+支持自定义日志输出策略
+
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
 # 快速开始
@@ -210,6 +216,61 @@ public void queryLogTest() {
 }
 ```
 
+# 支持自定义日志输出策略
+
+## 说明
+
+有时候我们希望自定义日志策略，比如除了输出到日志文件，还可以保存到数据库做审计日志等。
+
+## 说明
+
+可以通过 `@EnableAutoLog` 中的 value() 属性指定多个实现策略的类，执行按照对应的指定类顺序。
+
+最后方法的返回值以最后一个实现类为准。
+
+## 案例
+
+### 配置
+
+```java
+@Configurable
+@ComponentScan(basePackages = "com.github.houbb.auto.log.test.service")
+@EnableAutoLog(value = {MyAutoLog.class, SimpleAutoLog.class})
+public class SpringConfig {
+}
+```
+
+指定了 MyAutoLog（自定义策略） 和 SimpleAutoLog（默认策略） 策略。
+
+### 自定义实现
+
+```java
+public class MyAutoLog implements IAutoLog {
+
+    @Override
+    public Object autoLog(IAutoLogContext context) throws Throwable {
+        System.out.println("自定义参数：" + Arrays.toString(context.params()));
+        Object result = context.process();
+        System.out.println("自定义结果：" + result);
+        return result;
+    }
+
+}
+```
+
+其他完全保持不变。
+
+## 效果
+
+```
+自定义参数：[1]
+自定义结果：result-1
+九月 25, 2020 9:52:57 上午 com.github.houbb.auto.log.core.core.impl.SimpleAutoLog info
+信息: <查询日志>入参: [1].
+九月 25, 2020 9:52:57 上午 com.github.houbb.auto.log.core.core.impl.SimpleAutoLog info
+信息: <查询日志>出参：result-1.
+```
+
 # 开源地址
 
 > Github: [https://github.com/houbb/auto-log](https://github.com/houbb/auto-log)
@@ -222,7 +283,7 @@ public void queryLogTest() {
 
 比如全局的慢日志阈值设置等
 
-- [ ] 支持类
+- [ ] 支持类注解
 
 获取方法时，获取对应的类。
 
