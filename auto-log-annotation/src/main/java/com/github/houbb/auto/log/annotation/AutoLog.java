@@ -30,7 +30,7 @@ import java.lang.annotation.*;
  * 添加方法描述参数。
  *
  *
- * 配置优先级：类注解 < 方法注解
+ * 配置优先级：类注解 低于 方法注解
  *
  * @author binbin.hou
  * @since 0.0.1
@@ -102,6 +102,7 @@ public @interface AutoLog {
     /**
      * 具体的拦截器实现
      * @since 0.0.10
+     * @return 拦截器实现类
      */
     Class<? extends IAutoLogInterceptor>[] interceptor() default {IAutoLogInterceptor.class};
 

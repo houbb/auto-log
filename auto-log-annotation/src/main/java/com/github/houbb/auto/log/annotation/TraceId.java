@@ -40,6 +40,7 @@ public @interface TraceId {
     /**
      * 具体的拦截器实现
      * @since 0.0.10
+     * @return 实现类
      */
     Class<? extends ITraceIdInterceptor>[] interceptor() default {ITraceIdInterceptor.class};
 
