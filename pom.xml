@@ -19,7 +19,6 @@
         <module>auto-log-spring</module>
         <module>auto-log-springboot-starter</module>
         <module>auto-log-test</module>
-        <module>auto-log-test2</module>
     </modules>
 
     <properties>

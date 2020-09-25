@@ -3,10 +3,14 @@ package com.github.houbb.auto.log.core.support.interceptor.autolog;
 import com.alibaba.fastjson.JSON;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.api.IAutoLogInterceptorContext;
+import com.github.houbb.auto.log.core.util.ClassHelper;
+import com.github.houbb.heaven.util.lang.ObjectUtil;
+import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 默认的方法实现
@@ -28,6 +32,28 @@ public class AutoLogInterceptor extends AbstractAutoLogInterceptor {
             String traceIdBefore = super.getTraceId(autoLog);
             LOG.info(traceIdBefore + paramsLog);
         }
+    }
+
+    // 入参需要过滤掉 HttpServletRequest && HttpServletResponse
+    private List<Object> fitParams(Object[] params) {
+        List<Object> resultList = new ArrayList<>();
+        if(ArrayUtil.isEmpty(params)) {
+            return resultList;
+        }
+
+        for(Object param : params) {
+            if(ObjectUtil.isNull(param)) {
+                resultList.add(param);
+            }
+
+            Class<?> clazz = param.getClass();
+            if(ClassHelper.instanceOf(clazz, "javax.servlet.ServletRequest") || ClassHelper.instanceOf(clazz, "javax.servlet.ServletResponse") || ClassHelper.instanceOf(clazz, "org.springframework.web.multipart.MultipartFile")) {
+                continue;
+            }
+
+            resultList.add(param);
+        }
+        return resultList;
     }
 
     @Override
