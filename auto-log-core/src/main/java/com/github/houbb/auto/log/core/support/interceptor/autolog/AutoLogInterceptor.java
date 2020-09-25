@@ -26,8 +26,9 @@ public class AutoLogInterceptor extends AbstractAutoLogInterceptor {
         if(autoLog.param()) {
             String description = super.getMethodDescription(context.method(), autoLog);
             Object[] params = context.params();
+            List<Object> filterParams = filterParams(params);
             String paramsLog = String.format("<%s>入参: %s.",
-                    description, JSON.toJSON(params));
+                    description, JSON.toJSON(filterParams));
 
             String traceIdBefore = super.getTraceId(autoLog);
             LOG.info(traceIdBefore + paramsLog);
@@ -35,7 +36,7 @@ public class AutoLogInterceptor extends AbstractAutoLogInterceptor {
     }
 
     // 入参需要过滤掉 HttpServletRequest && HttpServletResponse
-    private List<Object> fitParams(Object[] params) {
+    private List<Object> filterParams(Object[] params) {
         List<Object> resultList = new ArrayList<>();
         if(ArrayUtil.isEmpty(params)) {
             return resultList;

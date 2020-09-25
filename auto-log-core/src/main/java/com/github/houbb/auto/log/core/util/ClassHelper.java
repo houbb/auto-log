@@ -2,7 +2,11 @@ package com.github.houbb.auto.log.core.util;
 
 import com.github.houbb.heaven.annotation.CommonEager;
 import com.github.houbb.heaven.util.common.ArgUtil;
+import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
 import com.github.houbb.heaven.util.util.ArrayUtil;
+import com.github.houbb.heaven.util.util.CollectionUtil;
+
+import java.util.List;
 
 /**
  * 类工具类
@@ -35,8 +39,8 @@ public final class ClassHelper {
             return true;
         }
 
-        Class<?>[] interfaces = clazz.getInterfaces();
-        if(ArrayUtil.isEmpty(interfaces)) {
+        List<Class> interfaces = ClassUtil.getAllInterfaces(clazz);
+        if(CollectionUtil.isEmpty(interfaces)) {
             return false;
         }
 
