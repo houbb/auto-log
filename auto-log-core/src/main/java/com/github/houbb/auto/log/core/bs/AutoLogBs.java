@@ -65,6 +65,7 @@ public final class AutoLogBs {
      * 自定日志输出
      * @return 输出
      * @since 0.0.6
+     * @throws Throwable 执行异常
      */
     public Object execute() throws Throwable {
         IAutoLog autoLog = ClassUtil.newInstance(autoLogClass);

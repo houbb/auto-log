@@ -68,8 +68,6 @@ public class AutoLogAop {
      *
      * 相当于 MethodInterceptor
      *
-     * 优先级：方法 > 类
-     *
      * @param point 切点
      * @return 结果
      * @throws Throwable 异常信息
