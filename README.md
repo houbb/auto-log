@@ -35,9 +35,9 @@
 
 ## 变更日志
 
-- v0.0.12 变化
+- v0.0.13 变化
 
-支持 `@AutoLog` 自定义过滤器 属性
+支持 `WebParamFilter` 作为默认的参数过滤器
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
