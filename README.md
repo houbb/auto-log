@@ -141,7 +141,7 @@ public String traceId(String id) {
 | slowThresholdMills | long | -1 | 当这个值大于等于 0 时，且耗时超过配置值，会输出慢日志 |
 | description | string |"" | 方法描述，默认选择方法名称 |
 | interceptor | Class[] | 默认实现 | 拦截器实现，支持指定多个和自定义 |
-| paramFilter | Class | 空 | 入参过滤器，支持自定义 |
+| paramFilter | Class | WebParamFilter | 入参过滤器，支持自定义 |
 
 ## @TraceId
 

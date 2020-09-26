@@ -4,6 +4,7 @@ import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.api.*;
 import com.github.houbb.auto.log.core.support.filter.param.ParamFilterContext;
+import com.github.houbb.auto.log.core.support.filter.param.WebParamFilter;
 import com.github.houbb.auto.log.core.support.interceptor.autolog.AutoLogInterceptor;
 import com.github.houbb.auto.log.core.support.interceptor.autolog.AutoLogInterceptorContext;
 import com.github.houbb.auto.log.core.support.interceptor.traceid.TraceIdInterceptor;
@@ -46,11 +47,15 @@ public class SimpleAutoLog implements IAutoLog {
             // 执行入参过滤
             Object[] params = context.params();
             Object[] filterParams = params;
-            if(!IParamFilter.class.equals(autoLog.paramFilter())) {
-                IParamFilter paramFilter = ClassUtil.newInstance(autoLog.paramFilter());
-                IParamFilterContext filterContext = ParamFilterContext.newInstance().params(params);
-                filterParams = paramFilter.filter(filterContext);
+            Class<? extends IParamFilter> paramFilterClass = autoLog.paramFilter();
+            if(IParamFilter.class.equals(paramFilterClass)) {
+                // 默认策略
+                paramFilterClass = WebParamFilter.class;
             }
+            IParamFilter paramFilter = ClassUtil.newInstance(paramFilterClass);
+            IParamFilterContext filterContext = ParamFilterContext.newInstance().params(params);
+            filterParams = paramFilter.filter(filterContext);
+
             traceIdContext = TraceIdInterceptorContext.newInstance().traceId(traceId);
             traceIdInterceptors = traceIdInterceptors(traceId);
             autoLogContext = AutoLogInterceptorContext.newInstance().autoLog(autoLog).startTime(startTimeMills)

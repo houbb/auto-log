@@ -1,9 +1,11 @@
 package com.github.houbb.auto.log.core.support.filter.param;
 
-import com.github.houbb.auto.log.core.util.ClassHelper;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.util.ArrayUtil;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 /**
  * web 过滤器
@@ -25,8 +27,8 @@ public class WebParamFilter extends AbstractParamFilter {
             Object param = params[i];
             // 过滤掉特殊的入参
             if(ObjectUtil.isNotNull(param)) {
-                Class<?> clazz = param.getClass();
-                if(ClassHelper.instanceOf(clazz, "javax.servlet.ServletRequest") || ClassHelper.instanceOf(clazz, "javax.servlet.ServletResponse") || ClassHelper.instanceOf(clazz, "org.springframework.web.multipart.MultipartFile")) {
+                if(param instanceof ServletRequest ||
+                        param instanceof ServletResponse) {
                     param = null;
                 }
             }
