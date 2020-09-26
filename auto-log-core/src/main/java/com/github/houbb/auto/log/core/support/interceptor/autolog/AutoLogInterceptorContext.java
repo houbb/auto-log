@@ -16,6 +16,12 @@ public class AutoLogInterceptorContext implements IAutoLogInterceptorContext {
 
     private Object[] params;
 
+    /**
+     * 过滤后的参数
+     * @since 0.0.12
+     */
+    private Object[] filterParams;
+
     private Method method;
 
     private long startTime;
@@ -43,6 +49,16 @@ public class AutoLogInterceptorContext implements IAutoLogInterceptorContext {
 
     public AutoLogInterceptorContext params(Object[] params) {
         this.params = params;
+        return this;
+    }
+
+    @Override
+    public Object[] filterParams() {
+        return filterParams;
+    }
+
+    public AutoLogInterceptorContext filterParams(Object[] filterParams) {
+        this.filterParams = filterParams;
         return this;
     }
 

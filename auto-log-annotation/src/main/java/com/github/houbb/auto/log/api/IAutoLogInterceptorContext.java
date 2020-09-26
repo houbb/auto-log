@@ -26,6 +26,13 @@ public interface IAutoLogInterceptorContext {
     Object[] params();
 
     /**
+     * 过滤后的参数信息
+     * @return 参数信息
+     * @since 0.0.12
+     */
+    Object[] filterParams();
+
+    /**
      * 方法信息
      * @return 方法信息
      * @since 0.0.10

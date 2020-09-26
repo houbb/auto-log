@@ -3,6 +3,7 @@ package com.github.houbb.auto.log.core.core.impl;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.api.*;
+import com.github.houbb.auto.log.core.support.filter.param.ParamFilterContext;
 import com.github.houbb.auto.log.core.support.interceptor.autolog.AutoLogInterceptor;
 import com.github.houbb.auto.log.core.support.interceptor.autolog.AutoLogInterceptorContext;
 import com.github.houbb.auto.log.core.support.interceptor.traceid.TraceIdInterceptor;
@@ -35,14 +36,29 @@ public class SimpleAutoLog implements IAutoLog {
         final long startTimeMills = System.currentTimeMillis();
         TraceId traceId = context.traceId();
         AutoLog autoLog = context.autoLog();
-
-        ITraceIdInterceptorContext traceIdContext = TraceIdInterceptorContext.newInstance().traceId(traceId);
-        List<ITraceIdInterceptor> traceIdInterceptors = traceIdInterceptors(traceId);
-        AutoLogInterceptorContext autoLogContext = AutoLogInterceptorContext.newInstance().autoLog(autoLog).startTime(startTimeMills)
-                .params(context.params()).method(context.method());
-        List<IAutoLogInterceptor> autoLogInterceptors = autoLogInterceptors(autoLog);
+        ITraceIdInterceptorContext traceIdContext = null;
+        AutoLogInterceptorContext autoLogContext = null;
+        List<ITraceIdInterceptor> traceIdInterceptors = null;
+        List<IAutoLogInterceptor> autoLogInterceptors = null;
 
         try {
+            // 统一对象处理
+            // 执行入参过滤
+            Object[] params = context.params();
+            Object[] filterParams = params;
+            if(!IParamFilter.class.equals(autoLog.paramFilter())) {
+                IParamFilter paramFilter = ClassUtil.newInstance(autoLog.paramFilter());
+                IParamFilterContext filterContext = ParamFilterContext.newInstance().params(params);
+                filterParams = paramFilter.filter(filterContext);
+            }
+            traceIdContext = TraceIdInterceptorContext.newInstance().traceId(traceId);
+            traceIdInterceptors = traceIdInterceptors(traceId);
+            autoLogContext = AutoLogInterceptorContext.newInstance().autoLog(autoLog).startTime(startTimeMills)
+                    .params(params)
+                    .filterParams(filterParams)
+                    .method(context.method());
+            autoLogInterceptors = autoLogInterceptors(autoLog);
+
             //1. 执行前
             //1.1 traceId
             if(CollectionUtil.isNotEmpty(traceIdInterceptors)) {

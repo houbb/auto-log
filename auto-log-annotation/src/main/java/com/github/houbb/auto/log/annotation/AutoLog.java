@@ -2,6 +2,7 @@ package com.github.houbb.auto.log.annotation;
 
 import com.github.houbb.auto.log.api.IAutoLog;
 import com.github.houbb.auto.log.api.IAutoLogInterceptor;
+import com.github.houbb.auto.log.api.IParamFilter;
 
 import java.lang.annotation.*;
 
@@ -105,5 +106,14 @@ public @interface AutoLog {
      * @return 拦截器实现类
      */
     Class<? extends IAutoLogInterceptor>[] interceptor() default {IAutoLogInterceptor.class};
+
+    /**
+     * 指定参数过滤器
+     *
+     * 作用：过滤 HttpRequest/HttpResponse 等不支持 JSON 序列化的特殊对象
+     * @return 是否过滤
+     * @since 0.0.12
+     */
+    Class<? extends IParamFilter> paramFilter() default IParamFilter.class;
 
 }

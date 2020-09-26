@@ -4,6 +4,7 @@ import com.github.houbb.auto.log.core.support.proxy.AutoLogProxy;
 import com.github.houbb.auto.log.test.service.UserService;
 import com.github.houbb.auto.log.test.service.impl.ClassAnnotationService;
 import com.github.houbb.auto.log.test.service.impl.MenuServiceImpl;
+import com.github.houbb.auto.log.test.service.impl.DefineService;
 import com.github.houbb.auto.log.test.service.impl.UserServiceImpl;
 import org.junit.Test;
 
@@ -52,6 +53,26 @@ public class AutoLogBsTest {
     public void classDisableTest() {
         ClassAnnotationService annotationService = AutoLogProxy.getProxy(new ClassAnnotationService());
         annotationService.disable();
+    }
+
+    /**
+     * 自定义拦截器
+     * @since 0.0.10
+     */
+    @Test
+    public void myInterceptorTest() {
+        DefineService service = AutoLogProxy.getProxy(new DefineService());
+        service.interceptor();
+    }
+
+    /**
+     * 自定义入参过滤器
+     * @since 0.0.12
+     */
+    @Test
+    public void myFilterTest() {
+        DefineService service = AutoLogProxy.getProxy(new DefineService());
+        service.paramFilter();
     }
 
 }

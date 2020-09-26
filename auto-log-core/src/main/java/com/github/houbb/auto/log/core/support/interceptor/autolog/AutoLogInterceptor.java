@@ -3,8 +3,12 @@ package com.github.houbb.auto.log.core.support.interceptor.autolog;
 import com.alibaba.fastjson.JSON;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.api.IAutoLogInterceptorContext;
+import com.github.houbb.auto.log.api.IParamFilter;
+import com.github.houbb.auto.log.api.IParamFilterContext;
+import com.github.houbb.auto.log.core.support.filter.param.ParamFilterContext;
 import com.github.houbb.auto.log.core.util.ClassHelper;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
+import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
 import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
@@ -25,36 +29,12 @@ public class AutoLogInterceptor extends AbstractAutoLogInterceptor {
     protected void doBefore(AutoLog autoLog, IAutoLogInterceptorContext context) {
         if(autoLog.param()) {
             String description = super.getMethodDescription(context.method(), autoLog);
-            Object[] params = context.params();
-            List<Object> filterParams = filterParams(params);
-            String paramsLog = String.format("<%s>入参: %s.",
-                    description, JSON.toJSON(filterParams));
+            Object[] params = context.filterParams();
+            String paramsLog = String.format("<%s>入参: %s.", description, JSON.toJSON(params));
 
             String traceIdBefore = super.getTraceId(autoLog);
             LOG.info(traceIdBefore + paramsLog);
         }
-    }
-
-    // 入参需要过滤掉 HttpServletRequest && HttpServletResponse
-    private List<Object> filterParams(Object[] params) {
-        List<Object> resultList = new ArrayList<>();
-        if(ArrayUtil.isEmpty(params)) {
-            return resultList;
-        }
-
-        for(Object param : params) {
-            if(ObjectUtil.isNull(param)) {
-                resultList.add(param);
-            }
-
-            Class<?> clazz = param.getClass();
-            if(ClassHelper.instanceOf(clazz, "javax.servlet.ServletRequest") || ClassHelper.instanceOf(clazz, "javax.servlet.ServletResponse") || ClassHelper.instanceOf(clazz, "org.springframework.web.multipart.MultipartFile")) {
-                continue;
-            }
-
-            resultList.add(param);
-        }
-        return resultList;
     }
 
     @Override

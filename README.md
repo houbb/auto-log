@@ -33,9 +33,9 @@
 
 ## 变更日志
 
-- v0.0.10 变化
+- v0.0.12 变化
 
-支持类级别定义注解
+支持 `@AutoLog` filter() 属性
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
@@ -139,6 +139,7 @@ public String traceId(String id) {
 | slowThresholdMills | long | -1 | 当这个值大于等于 0 时，且耗时超过配置值，会输出慢日志 |
 | description | string |"" | 方法描述，默认选择方法名称 |
 | interceptor | Class[] | 默认实现 | 拦截器实现，支持指定多个和自定义 |
+| paramFilter | Class | 空 | 入参过滤器，支持自定义 |
 
 ## @TraceId
 
@@ -150,6 +151,86 @@ public String traceId(String id) {
 | putIfAbsent | boolean | false | 是否在当前线程没有值的时候才设置值 |
 | enable | boolean | true | 是否启用 |
 | interceptor | Class[] | 默认实现 | 拦截器实现，支持指定多个和自定义 |
+
+# 自定义策略
+
+## 自定义日志拦截器（interceptor）
+
+### 内置拦截器
+
+`AutoLogInterceptor` 默认实现
+
+### 定义
+
+直接继承自 `AbstractAutoLogInterceptor` 类，并且实现对应的方法即可。
+
+```java
+public class MyAutoLogInterceptor extends AbstractAutoLogInterceptor {
+
+    @Override
+    protected void doBefore(AutoLog autoLog, IAutoLogInterceptorContext context) {
+        System.out.println("自定义入参：" + Arrays.toString(context.filterParams()));
+    }
+
+    @Override
+    protected void doAfter(AutoLog autoLog, Object result, IAutoLogInterceptorContext context) {
+        System.out.println("自定义出参：" + result);
+    }
+
+    @Override
+    protected void doException(AutoLog autoLog, Exception exception, IAutoLogInterceptorContext context) {
+        System.out.println("自定义异常：");
+        exception.printStackTrace();
+    }
+
+}
+```
+
+### 使用
+
+如下，这样日志输出，就会使用上面的指定策略。
+
+```java
+@AutoLog(interceptor = MyAutoLogInterceptor.class)
+public String my() {
+    return "自定义策略";
+}
+```
+
+## 自定义入参过滤器（paramFilter）
+
+### 内置
+
+`WebParamFilter` 主要用于过滤 HttpRequest HttpServlet 等无法直接 JSON 序列化的对象。
+
+### 自定义
+
+直接继承 `AbstractParamFilter` 类实现对应的方法即可。
+
+```java
+public class MyParamFilter extends AbstractParamFilter {
+
+    @Override
+    protected Object[] doFilter(Object[] params) {
+        Object[] newParams = new Object[1];
+        newParams[0] = "设置我我想要的值";
+        return newParams;
+    }
+
+}
+```
+
+### 使用
+
+指定对应的参数过滤器。这样，无论入参是什么，都会变成我们指定的 `[设置我我想要的值]`。
+
+```java
+@AutoLog(paramFilter = MyParamFilter.class)
+public String paramFilter() {
+    return "自定义入参过滤器";
+}
+```
+
 
 # spring 整合使用
 
@@ -220,61 +301,6 @@ private UserService userService;
 public void queryLogTest() {
     userService.query("spring-boot");
 }
-```
-
-# 支持自定义日志输出策略
-
-## 说明
-
-有时候我们希望自定义日志策略，比如除了输出到日志文件，还可以保存到数据库做审计日志等。
-
-## 说明
-
-可以通过 `@EnableAutoLog` 中的 value() 属性指定多个实现策略的类，执行按照对应的指定类顺序。
-
-最后方法的返回值以最后一个实现类为准。
-
-## 案例
-
-### 配置
-
-```java
-@Configurable
-@ComponentScan(basePackages = "com.github.houbb.auto.log.test.service")
-@EnableAutoLog(value = {MyAutoLog.class, SimpleAutoLog.class})
-public class SpringConfig {
-}
-```
-
-指定了 MyAutoLog（自定义策略） 和 SimpleAutoLog（默认策略） 策略。
-
-### 自定义实现
-
-```java
-public class MyAutoLog implements IAutoLog {
-
-    @Override
-    public Object autoLog(IAutoLogContext context) throws Throwable {
-        System.out.println("自定义参数：" + Arrays.toString(context.params()));
-        Object result = context.process();
-        System.out.println("自定义结果：" + result);
-        return result;
-    }
-
-}
-```
-
-其他完全保持不变。
-
-## 效果
-
-```
-自定义参数：[1]
-自定义结果：result-1
-九月 25, 2020 9:52:57 上午 com.github.houbb.auto.log.core.core.impl.SimpleAutoLog info
-信息: <查询日志>入参: [1].
-九月 25, 2020 9:52:57 上午 com.github.houbb.auto.log.core.core.impl.SimpleAutoLog info
-信息: <查询日志>出参：result-1.
 ```
 
 # 开源地址
