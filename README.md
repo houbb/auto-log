@@ -31,11 +31,13 @@
 
 - 支持类级别定义注解
 
+- 支持自定义拦截器和过滤器
+
 ## 变更日志
 
 - v0.0.12 变化
 
-支持 `@AutoLog` filter() 属性
+支持 `@AutoLog` 自定义过滤器 属性
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
