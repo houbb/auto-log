@@ -1,8 +1,6 @@
 package com.github.houbb.auto.log.core.bs;
 
-import com.github.houbb.auto.log.core.support.holder.IdHolder;
-import com.github.houbb.auto.log.core.support.holder.impl.IdHolders;
-import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.auto.log.core.util.AutoLogUtil;
 import com.github.houbb.id.api.Id;
 import com.github.houbb.id.core.core.Ids;
 
@@ -15,11 +13,6 @@ public final class TraceIdBs {
 
     private TraceIdBs(){}
 
-    /**
-     * id 持有类
-     * @since 0.0.8
-     */
-    private static final IdHolder ID_HOLDER = IdHolders.threadLocal();
 
     /**
      * id 生成类
@@ -53,7 +46,7 @@ public final class TraceIdBs {
      * @since 0.0.8
      */
     public String getTraceId() {
-       return ID_HOLDER.get();
+       return AutoLogUtil.get();
     }
 
     /**
@@ -62,7 +55,7 @@ public final class TraceIdBs {
      * @since 0.0.8
      */
     public static String get() {
-        return ID_HOLDER.get();
+        return AutoLogUtil.get();
     }
 
     /**
@@ -70,7 +63,7 @@ public final class TraceIdBs {
      * @since 0.0.8
      */
     public void removeTraceId() {
-        ID_HOLDER.remove();
+        AutoLogUtil.removeTraceId();
     }
 
     /**
@@ -99,14 +92,7 @@ public final class TraceIdBs {
      * @return 结果
      */
     public String putIfAbsent(String newTraceId) {
-        String traceId = ID_HOLDER.get();
-        if(StringUtil.isEmpty(traceId)) {
-            traceId = newTraceId;
-
-            ID_HOLDER.put(traceId);
-        }
-
-        return traceId;
+        return AutoLogUtil.putIfAbsent(newTraceId);
     }
 
     /**
@@ -115,7 +101,7 @@ public final class TraceIdBs {
      * @since 0.0.8
      */
     public void put(String newTraceId) {
-        ID_HOLDER.put(newTraceId);
+        AutoLogUtil.put(newTraceId);
     }
 
 }
