@@ -35,9 +35,9 @@
 
 ## 变更日志
 
-- v0.0.14 变化
+- v0.0.15 变化
 
-将 AutoLogUtil 提取为单独的工具类，便于获取 traceId
+内置过滤器，过滤 MultipartFile 类型的参数。
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
@@ -49,7 +49,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.0.14</version>
+    <version>0.0.15</version>
 </dependency>
 ```
 

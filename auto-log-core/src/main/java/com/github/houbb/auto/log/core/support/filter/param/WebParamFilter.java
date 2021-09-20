@@ -3,6 +3,7 @@ package com.github.houbb.auto.log.core.support.filter.param;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.util.ArrayUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -28,7 +29,8 @@ public class WebParamFilter extends AbstractParamFilter {
             // 过滤掉特殊的入参
             if(ObjectUtil.isNotNull(param)) {
                 if(param instanceof ServletRequest ||
-                        param instanceof ServletResponse) {
+                        param instanceof ServletResponse ||
+                        param instanceof MultipartFile) {
                     param = null;
                 }
             }

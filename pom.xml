@@ -12,7 +12,7 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.14</version>
+    <version>0.0.15</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
@@ -47,6 +47,7 @@
         <!--============================== OTHER ==============================-->
         <junit.version>4.12</junit.version>
         <spring-boot.version>1.5.22.RELEASE</spring-boot.version>
+        <spring.version>4.3.15.RELEASE</spring.version>
         <fastjson.version>1.2.73</fastjson.version>
     </properties>
 
@@ -118,7 +119,6 @@
                 <artifactId>spring-boot-starter</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
