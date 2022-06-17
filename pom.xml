@@ -48,7 +48,7 @@
         <junit.version>4.12</junit.version>
         <spring-boot.version>1.5.22.RELEASE</spring-boot.version>
         <spring.version>4.3.15.RELEASE</spring.version>
-        <fastjson.version>1.2.73</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
     </properties>
 
     <dependencyManagement>
