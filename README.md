@@ -35,10 +35,6 @@
 
 ## 变更日志
 
-- v0.0.15 变化
-
-内置过滤器，过滤 MultipartFile 类型的参数。
-
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
 # 快速开始
@@ -49,7 +45,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.0.15</version>
+    <version>0.0.16</version>
 </dependency>
 ```
 
@@ -110,7 +106,6 @@ service.traceId("1");
 
 ```java
 @AutoLog
-@TraceId
 public String traceId(String id) {
     return id+"-1";
 }
@@ -142,17 +137,10 @@ public String traceId(String id) {
 | description | string |"" | 方法描述，默认选择方法名称 |
 | interceptor | Class[] | 默认实现 | 拦截器实现，支持指定多个和自定义 |
 | paramFilter | Class | WebParamFilter | 入参过滤器，支持自定义 |
+| traceId | Class | Id.class | 日志跟踪号生成策略 |
+| enableTraceId | boolean | true | 是否启用 traceId 的变化 |
 
-## @TraceId
-
-`@TraceId` 放在需要设置 traceId 的方法上，比如 Controller 层，mq 的消费者，rpc 请求的接受者等。
-
-| 属性 | 类型 | 默认值 | 说明 |
-|:--|:--|:--|:--|
-| id | Class | 默认为 uuid | traceId 的实现策略 |
-| putIfAbsent | boolean | false | 是否在当前线程没有值的时候才设置值 |
-| enable | boolean | true | 是否启用 |
-| interceptor | Class[] | 默认实现 | 拦截器实现，支持指定多个和自定义 |
+使用建议，在入口的方法中设置 `enableTraceId=true`，会统一设置 traceId，贯穿整个日志周期。 底层依赖的 service/biz 层等，设置为 false 即可。
 
 # 自定义策略
 

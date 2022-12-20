@@ -12,7 +12,7 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.15</version>
+    <version>0.0.16</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
@@ -38,11 +38,11 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.1.112</heaven.version>
+        <heaven.version>0.1.169</heaven.version>
         <log-integration.version>1.1.8</log-integration.version>
-        <aop.version>0.0.3</aop.version>
+        <aop.version>0.0.4</aop.version>
         <test.version>0.0.1</test.version>
-        <id.version>0.0.5</id.version>
+        <id.version>0.0.7</id.version>
 
         <!--============================== OTHER ==============================-->
         <junit.version>4.12</junit.version>

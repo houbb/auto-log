@@ -1,8 +1,8 @@
 package com.github.houbb.auto.log.annotation;
 
-import com.github.houbb.auto.log.api.IAutoLog;
 import com.github.houbb.auto.log.api.IAutoLogInterceptor;
 import com.github.houbb.auto.log.api.IParamFilter;
+import com.github.houbb.id.api.Id;
 
 import java.lang.annotation.*;
 
@@ -94,11 +94,24 @@ public @interface AutoLog {
     String description() default "";
 
     /**
-     * 是否显示 traceId 信息
-     * @return 是否
-     * @since 0.0.8
+     * trace id 策略
+     * @return 结果
+     * @since 0.0.16
      */
-    boolean traceId() default true;
+    Class<? extends Id> traceId() default Id.class;
+
+    /**
+     * 是否日志跟踪号，建议只在最外层启用即可。
+     * 1. controller
+     * 2. mq
+     * 3. rpc
+     *
+     * 所有调用的最外层入口设置为 true 即可, service 层等底层实现设置为 false
+     *
+     * @return 结果
+     * @since 0.0.16
+     */
+    boolean enableTraceId() default true;
 
     /**
      * 具体的拦截器实现

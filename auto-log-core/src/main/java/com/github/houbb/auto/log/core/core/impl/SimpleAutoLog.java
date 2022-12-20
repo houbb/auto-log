@@ -1,14 +1,11 @@
 package com.github.houbb.auto.log.core.core.impl;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
-import com.github.houbb.auto.log.annotation.TraceId;
 import com.github.houbb.auto.log.api.*;
 import com.github.houbb.auto.log.core.support.filter.param.ParamFilterContext;
 import com.github.houbb.auto.log.core.support.filter.param.WebParamFilter;
 import com.github.houbb.auto.log.core.support.interceptor.autolog.AutoLogInterceptor;
 import com.github.houbb.auto.log.core.support.interceptor.autolog.AutoLogInterceptorContext;
-import com.github.houbb.auto.log.core.support.interceptor.traceid.TraceIdInterceptor;
-import com.github.houbb.auto.log.core.support.interceptor.traceid.TraceIdInterceptorContext;
 import com.github.houbb.auto.log.exception.AutoLogRuntimeException;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
@@ -35,11 +32,8 @@ public class SimpleAutoLog implements IAutoLog {
     public Object autoLog(IAutoLogContext context) throws Throwable {
         //1. 日志唯一标识
         final long startTimeMills = System.currentTimeMillis();
-        TraceId traceId = context.traceId();
         AutoLog autoLog = context.autoLog();
-        ITraceIdInterceptorContext traceIdContext = null;
         AutoLogInterceptorContext autoLogContext = null;
-        List<ITraceIdInterceptor> traceIdInterceptors = null;
         List<IAutoLogInterceptor> autoLogInterceptors = null;
 
         try {
@@ -56,22 +50,11 @@ public class SimpleAutoLog implements IAutoLog {
             IParamFilterContext filterContext = ParamFilterContext.newInstance().params(params);
             filterParams = paramFilter.filter(filterContext);
 
-            traceIdContext = TraceIdInterceptorContext.newInstance().traceId(traceId);
-            traceIdInterceptors = traceIdInterceptors(traceId);
             autoLogContext = AutoLogInterceptorContext.newInstance().autoLog(autoLog).startTime(startTimeMills)
                     .params(params)
                     .filterParams(filterParams)
                     .method(context.method());
             autoLogInterceptors = autoLogInterceptors(autoLog);
-
-            //1. 执行前
-            //1.1 traceId
-            if(CollectionUtil.isNotEmpty(traceIdInterceptors)) {
-                for(ITraceIdInterceptor interceptor : traceIdInterceptors) {
-                    // 执行
-                    interceptor.beforeHandle(traceIdContext);
-                }
-            }
 
             //1.2 autoLog
             if(CollectionUtil.isNotEmpty(autoLogInterceptors)) {
@@ -109,14 +92,6 @@ public class SimpleAutoLog implements IAutoLog {
                     interceptor.finallyHandle(autoLogContext);
                 }
             }
-
-            // 后移除
-            if(CollectionUtil.isNotEmpty(traceIdInterceptors)) {
-                for(ITraceIdInterceptor interceptor : traceIdInterceptors) {
-                    // 执行
-                    interceptor.finallyHandle(traceIdContext);
-                }
-            }
         }
     }
 
@@ -146,45 +121,6 @@ public class SimpleAutoLog implements IAutoLog {
         return resultList;
     }
 
-    /**
-     * 创建拦截器列表
-     * @param traceId 注解
-     * @return 结果
-     * @since 0.0.10
-     */
-    private List<ITraceIdInterceptor> traceIdInterceptors(final TraceId traceId) {
-        List<ITraceIdInterceptor> resultList = new ArrayList<>();
-        if(ObjectUtil.isNull(traceId)) {
-            return resultList;
-        }
-
-        Class<? extends ITraceIdInterceptor>[] interceptorClasses = traceId.interceptor();
-        if(ArrayUtil.isEmpty(interceptorClasses)) {
-            return resultList;
-        }
-
-        // 循环创建
-        for(Class<? extends ITraceIdInterceptor> clazz : interceptorClasses) {
-            ITraceIdInterceptor traceIdInterceptor = createTraceIdInterceptor(clazz);
-            resultList.add(traceIdInterceptor);
-        }
-
-        return resultList;
-    }
-
-    /**
-     * 创建拦截器
-     * @param clazz 类
-     * @return 实体
-     * @since 0.0.10
-     */
-    private ITraceIdInterceptor createTraceIdInterceptor(final Class<? extends ITraceIdInterceptor> clazz) {
-        if(ITraceIdInterceptor.class.equals(clazz)) {
-            return new TraceIdInterceptor();
-        }
-
-        return ClassUtil.newInstance(clazz);
-    }
 
     /**
      * 创建拦截器

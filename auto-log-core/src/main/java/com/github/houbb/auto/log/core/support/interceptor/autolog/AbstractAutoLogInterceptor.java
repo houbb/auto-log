@@ -3,8 +3,11 @@ package com.github.houbb.auto.log.core.support.interceptor.autolog;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.api.IAutoLogInterceptor;
 import com.github.houbb.auto.log.api.IAutoLogInterceptorContext;
-import com.github.houbb.auto.log.core.bs.TraceIdBs;
 import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
+import com.github.houbb.id.api.Id;
+import com.github.houbb.id.core.core.Ids;
+import com.github.houbb.id.core.util.IdThreadLocalHelper;
 
 import java.lang.reflect.Method;
 
@@ -56,16 +59,38 @@ public abstract class AbstractAutoLogInterceptor implements IAutoLogInterceptor 
      * @since 0.0.10
      */
     protected String getTraceId(AutoLog autoLog) {
-        if(!autoLog.traceId()) {
-            return StringUtil.EMPTY;
+        //1. 优先看当前线程中是否存在
+        String oldId = IdThreadLocalHelper.get();
+        if(StringUtil.isNotEmpty(oldId)) {
+            return formatTraceId(oldId);
         }
 
-        String traceId = TraceIdBs.get();
-        if(StringUtil.isEmpty(traceId)) {
-            return StringUtil.EMPTY;
-        }
+        //2. 返回对应的标识
+        Id id = getActualTraceId(autoLog);
+        return formatTraceId(id.id());
+    }
 
-        return String.format("[%s] ", traceId);
+    /**
+     * 获取日志跟踪号策略
+     * @param autoLog 注解
+     * @return 没结果
+     */
+    protected Id getActualTraceId(AutoLog autoLog) {
+        Class<? extends Id> idClass = autoLog.traceId();
+        if(Id.class.equals(idClass)) {
+            return Ids.uuid32();
+        }
+        return ClassUtil.newInstance(autoLog.traceId());
+    }
+
+    /**
+     * 格式化日志跟踪号
+     * @param id 跟踪号
+     * @return 结果
+     * @since 0.0.16
+     */
+    protected String formatTraceId(String id) {
+        return String.format("[%s] ", id);
     }
 
     /**
