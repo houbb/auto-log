@@ -61,6 +61,7 @@ public interface MultipartFile extends InputStreamSource {
     /**
      * Return whether the uploaded file is empty, that is, either no file has
      * been chosen in the multipart form or the chosen file has no content.
+     * @return 是否为空
      */
     boolean isEmpty();
 
