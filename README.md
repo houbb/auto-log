@@ -45,7 +45,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.0.16</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -313,28 +313,41 @@ public void queryLogTest() {
 
 - [ ] 编译时注解特性 
 
-# 中间件等工具开源矩阵
+# 开源矩阵
 
-[heaven: 收集开发中常用的工具类](https://github.com/houbb/heaven)
-
-[rpc: 基于 netty4 实现的远程调用工具](https://github.com/houbb/rpc)
-
-[mq: 简易版 mq 实现](https://github.com/houbb/mq)
-
-[ioc: 模拟简易版 spring ioc](https://github.com/houbb/ioc)
-
-[mybatis: 简易版 mybatis](https://github.com/houbb/mybatis)
-
-[cache: 渐进式 redis 缓存](https://github.com/houbb/cache)
-
-[jdbc-pool: 数据库连接池实现](https://github.com/houbb/jdbc-pool)
-
-[sandglass: 任务调度时间工具框架](https://github.com/houbb/sandglass)
-
-[sisyphus: 支持注解的重试框架](https://github.com/houbb/sisyphus)
-
-[resubmit: 防止重复提交框架，支持注解](https://github.com/houbb/resubmit)
-
-[auto-log: 日志自动输出](https://github.com/houbb/auto-log)
-
-[async: 多线程异步并行框架](https://github.com/houbb/async)
+| 编号 | 名称 | 简介 | 标签 |
+|:----|:----|:----|:----|
+| 1 | [sensitive](https://github.com/houbb/sensitive) | 基于注解的日志脱敏框架，更加优雅的日志打印 | 工具，日志 |
+| 2 | [auto-log](https://github.com/houbb/auto-log) | 日志自动输出 | 工具，日志 |
+| 3 | [heaven](https://github.com/houbb/heaven) | 收集开发中常用的工具类 | 工具 |
+| 4 | [resubmit](https://github.com/houbb/resubmit) | 防止重复提交框架 | 工具 |
+| 5 | [validator](https://github.com/houbb/validator) | 新一代校验框架 | 工具 |
+| 6 | [rate-limit](https://github.com/houbb/rate-limit) | 渐进式限流工具框架 | 工具 |
+| 7 | [lock](https://github.com/houbb/lock) | 开箱即用分布式锁 | 工具 |
+| 8 | [lombok-ex](https://github.com/houbb/lombok-ex) | 编译时注解框架，扩展 lombok | 工具 |
+| 9 | [csv](https://github.com/houbb/csv) | CSV的读写工具 | 工具 |
+| 10 | [iexcel](https://github.com/houbb/iexcel) | EXCEL的读写工具，避免OOM | 工具 |
+| 11 | [leetcode](https://github.com/houbb/leetcode) | 力扣算法个人学习笔记 | 学习 |
+| 12 | [awesome-metaverse-zh](https://github.com/houbb/awesome-metaverse-zh) | 元宇宙精选 | 学习 |
+| 13 | [rpc](https://github.com/houbb/rpc) | 手写rpc框架 | 学习,中间件 |
+| 14 | [mybatis](https://github.com/houbb/mybatis) | 手写mybatis框架 | 学习,中间件 |
+| 15 | [cache](https://github.com/houbb/cache) | 手写redis框架 | 学习,中间件 |
+| 16 | [mq](https://github.com/houbb/mq) | 手写mq框架 | 学习,中间件 |
+| 17 | [ioc](https://github.com/houbb/ioc) | 手写spring ioc框架 | 学习,中间件 |
+| 18 | [async](https://github.com/houbb/async) | 手写线程池异步框架 | 学习,中间件 |
+| 19 | [jdbc-pool](https://github.com/houbb/jdbc-pool) | 手写数据库连接池实现 | 学习,中间件 |
+| 20 | [sisyphus](https://github.com/houbb/sisyphus) | 支持注解的重试框架 | 学习,中间件 |
+| 21 | [sandglass](https://github.com/houbb/sandglass) | 任务调度时间框架 | 学习,中间件 |
+| 22 | [segment](https://github.com/houbb/segment) | 基于结巴的分词实现 | NLP |
+| 23 | [pinyin](https://github.com/houbb/pinyin) | 高性能中文转拼音工具 | NLP |
+| 24 | [opencc4j](https://github.com/houbb/opencc4j) | 中文繁简体转换 | NLP |
+| 25 | [word-checker](https://github.com/houbb/word-checker) | 中英文拼写检测 | NLP |
+| 26 | [sensitive-word](https://github.com/houbb/sensitive-word) | 敏感词 | NLP |
+| 27 | [nlp-hanzi-similar](https://github.com/houbb/nlp-hanzi-similar) | 汉字相似度 | NLP |
+| 28 | [word-cloud](https://github.com/houbb/word-cloud) | 好用的词云工具 | DOC |
+| 29 | [markdown-toc](https://github.com/houbb/markdown-toc) | 为文档生成目录 | DOC |
+| 30 | [idoc](https://github.com/houbb/idoc) | 项目自动生成文档 | DOC |
+| 31 | [metadata](https://github.com/houbb/metadata) | 数据库元数据表文档生成 | DOC |
+| 32 | [data-factory](https://github.com/houbb/data-factory) | 测试自动生成对象信息 | TEST |
+| 33 | [junitperf](https://github.com/houbb/junitperf) | 性能测试框架，测试报告生成 | TEST |
+| 34 | [houbb.github.io](https://github.com/houbb/houbb.github.io) | 个人博客 | 学习 |
