@@ -45,7 +45,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
@@ -308,6 +308,8 @@ public void queryLogTest() {
 - [ ] 全局配置
 
 比如全局的慢日志阈值设置等
+
+参考 sandglass 中如何加载注解中的配置信息？
 
 - [ ] jvm-sandbox 特性
 

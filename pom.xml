@@ -12,13 +12,14 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
         <module>auto-log-spring</module>
         <module>auto-log-springboot-starter</module>
         <module>auto-log-test</module>
+        <module>auto-log-core-extra</module>
     </modules>
 
     <properties>
@@ -62,6 +63,11 @@
             <dependency>
                 <groupId>com.github.houbb</groupId>
                 <artifactId>auto-log-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>auto-log-core-extra</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -114,6 +120,11 @@
             </dependency>
 
             <!--============================== OTHER ==============================-->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>

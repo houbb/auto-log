@@ -2,20 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>auto-log</artifactId>
         <groupId>com.github.houbb</groupId>
+        <artifactId>auto-log</artifactId>
         <version>0.2.0</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>auto-log-annotation</artifactId>
+    <artifactId>auto-log-core-extra</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>id-api</artifactId>
-        </dependency>
-    </dependencies>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 </project>

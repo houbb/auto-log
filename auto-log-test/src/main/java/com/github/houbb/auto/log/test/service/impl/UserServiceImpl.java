@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
         return this.query(id);
     }
 
+    @AutoLog(description = "私有查询日志")
+    private String privateQueryLog(String id) {
+        return this.query(id);
+    }
+
     @Override
     @AutoLog(slowThresholdMills = 1000)
     public String slowLog(String id) {

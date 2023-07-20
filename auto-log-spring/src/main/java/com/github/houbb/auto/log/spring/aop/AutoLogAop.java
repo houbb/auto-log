@@ -48,6 +48,18 @@ public class AutoLogAop {
      * 缺点：弱化了注解的特性，本来是只要是 {@link com.github.houbb.auto.log.annotation.AutoLog} 指定的注解即可，
      *
      * 不过考虑到使用者的熟练度，如果用户知道了自定义注解，自定义 aop 应该也不是问题。
+     *
+     * // 匹配任意public方法
+     * execution(public * *(..))
+     * // 匹配任意以set开头的方法
+     * execution(* set*(..))
+     * // 匹配AccountService接口中定义的任意方法
+     * execution(* com.xyz.service.AccountService.*(..))
+     * // 匹配service包定义的任意方法
+     * execution(* com.xyz.service.*.*(..))
+     * // 匹配service或其子包中定义的任意方法
+     * execution(* com.xyz.service..*.*(..))
+     *
      */
     @Pointcut("@within(com.github.houbb.auto.log.annotation.AutoLog)" +
             "|| @annotation(com.github.houbb.auto.log.annotation.AutoLog)")
