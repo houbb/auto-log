@@ -12,6 +12,13 @@ import java.lang.reflect.Method;
 public interface IAutoLogContext {
 
     /**
+     * 配置信息
+     * @return 配置
+     * @since 0.3.0
+     */
+    AutoLogConfig autoLogConfig();
+
+    /**
      * 注解信息
      * @return 注解信息
      * @since 0.0.7

@@ -301,6 +301,8 @@ public void queryLogTest() {
 
 # Road-Map
 
+- [ ] 改进 interceptor 拦截器
+
 - [ ] 优化日志中的方法路径名称
 
 考虑补全对应的类信息

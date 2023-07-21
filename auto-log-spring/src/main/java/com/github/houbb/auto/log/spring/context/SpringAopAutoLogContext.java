@@ -1,6 +1,7 @@
 package com.github.houbb.auto.log.spring.context;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
+import com.github.houbb.auto.log.api.AutoLogConfig;
 import com.github.houbb.auto.log.api.IAutoLogContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 
@@ -11,6 +12,8 @@ import java.lang.reflect.Method;
  * @since 0.0.7
  */
 public class SpringAopAutoLogContext implements IAutoLogContext {
+
+    private AutoLogConfig autoLogConfig;
 
     /**
      * 注解信息
@@ -43,6 +46,16 @@ public class SpringAopAutoLogContext implements IAutoLogContext {
      */
     public static SpringAopAutoLogContext newInstance() {
         return new SpringAopAutoLogContext();
+    }
+
+    @Override
+    public AutoLogConfig autoLogConfig() {
+        return autoLogConfig;
+    }
+
+    public SpringAopAutoLogContext autoLogConfig(AutoLogConfig autoLogConfig) {
+        this.autoLogConfig = autoLogConfig;
+        return this;
     }
 
     @Override
