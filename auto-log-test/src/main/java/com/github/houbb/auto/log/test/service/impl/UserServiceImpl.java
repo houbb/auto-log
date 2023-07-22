@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @since 0.0.2
  */
 @Service
+//@AutoLog
 public class UserServiceImpl implements UserService {
 
     @Override

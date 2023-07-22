@@ -1,7 +1,6 @@
 package com.github.houbb.auto.log.core.core.impl;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
-import com.github.houbb.auto.log.api.AutoLogConfig;
 import com.github.houbb.auto.log.api.IAutoLogContext;
 
 import java.lang.reflect.Method;
@@ -12,12 +11,6 @@ import java.lang.reflect.Method;
  * @since 0.0.7
  */
 public class SimpleAutoLogContext implements IAutoLogContext {
-
-    /**
-     * 配置信息
-     * @since 0.3.0
-     */
-    private AutoLogConfig autoLogConfig;
 
     /**
      * 注解信息
@@ -93,16 +86,6 @@ public class SimpleAutoLogContext implements IAutoLogContext {
     @Override
     public Object process() throws Exception {
         return method.invoke(target, params);
-    }
-
-    @Override
-    public AutoLogConfig autoLogConfig() {
-        return autoLogConfig;
-    }
-
-    public SimpleAutoLogContext autoLogConfig(AutoLogConfig autoLogConfig) {
-        this.autoLogConfig = autoLogConfig;
-        return this;
     }
 
 }

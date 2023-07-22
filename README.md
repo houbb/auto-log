@@ -33,6 +33,8 @@
 
 - 支持自定义拦截器和过滤器
 
+- 支持 spring aop 注解切面自定义
+
 ## 变更日志
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
@@ -45,7 +47,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
@@ -290,6 +292,78 @@ private UserService userService;
 @Test
 public void queryLogTest() {
     userService.query("spring-boot");
+}
+```
+
+## 切面自定义
+
+spring aop 的切面读取自 `@Value("${auto.log.pointcut}")`，默认为值 `@within(com.github.houbb.auto.log.annotation.AutoLog)||@annotation(com.github.houbb.auto.log.annotation.AutoLog)`
+
+也就是默认是读取被 `@AutoLog` 指定的方法或者类。
+
+当然，这并不够方便，我们希望可以想平时写 aop 注解一样，指定 spring aop 的扫描范围，直接在 spring 中指定一下 `auto.log.pointcut` 的属性值即可。
+
+### 测试例子
+
+我们在配置文件 `autoLogConfig.properties` 中自定义下包扫描的范围：
+
+```
+auto.log.pointcut=execution(* com.github.houbb.auto.log.test.dynamic.service.MyAddressService.*(..))
+```
+
+自定义测试 service
+
+```java
+package com.github.houbb.auto.log.test.dynamic.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyAddressService {
+
+    public String queryAddress(String id) {
+        return "address-" + id;
+    }
+
+}
+```
+
+自定义 spring 配置，指定我们定义的配置文件。springboot 啥的，可以直接放在 application.properties 中指定，此处仅作为演示。
+
+```java
+@Configurable
+@ComponentScan(basePackages = "com.github.houbb.auto.log.test.dynamic.service")
+@EnableAutoLog
+@PropertySource("classpath:autoLogConfig.properties")
+public class SpringDynamicConfig {
+}
+```
+
+测试
+
+```java
+@ContextConfiguration(classes = SpringDynamicConfig.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+public class SpringDynamicServiceTest {
+
+    @Autowired
+    private MyAddressService myAddressService;
+
+    @Autowired
+    private MyUserService myUserService;
+
+    @Test
+    public void queryUserTest() {
+        // 不会被日志拦截
+        myUserService.queryUser("1");
+    }
+
+    @Test
+    public void queryAddressTest() {
+        // 会被日志拦截
+        myAddressService.queryAddress("1");
+    }
+
 }
 ```
 

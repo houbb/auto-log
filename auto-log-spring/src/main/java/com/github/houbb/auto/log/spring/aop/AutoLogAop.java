@@ -21,9 +21,10 @@ import java.lang.reflect.Method;
  * @author binbin.hou
  * @since 0.0.3
  */
-@Aspect
-@Component
-@EnableAspectJAutoProxy
+//@Aspect
+//@Component
+//@EnableAspectJAutoProxy
+@Deprecated
 public class AutoLogAop {
 
     /**

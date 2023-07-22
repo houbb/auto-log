@@ -1,7 +1,6 @@
 package com.github.houbb.auto.log.core.core.impl;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
-import com.github.houbb.auto.log.api.AutoLogConfig;
 import com.github.houbb.auto.log.api.IAutoLogContext;
 
 import java.lang.reflect.Method;
@@ -12,12 +11,6 @@ import java.lang.reflect.Method;
  * @since 0.3.0
  */
 public abstract class AbstractAutoLogContext implements IAutoLogContext {
-
-    /**
-     * 配置信息
-     * @since 0.3.0
-     */
-    private AutoLogConfig autoLogConfig;
 
     /**
      * 注解信息
@@ -64,16 +57,6 @@ public abstract class AbstractAutoLogContext implements IAutoLogContext {
 
     public AbstractAutoLogContext method(Method method) {
         this.method = method;
-        return this;
-    }
-
-    @Override
-    public AutoLogConfig autoLogConfig() {
-        return autoLogConfig;
-    }
-
-    public AbstractAutoLogContext autoLogConfig(AutoLogConfig autoLogConfig) {
-        this.autoLogConfig = autoLogConfig;
         return this;
     }
 
