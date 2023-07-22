@@ -267,35 +267,9 @@ public class SpringServiceTest {
 五月 30, 2020 12:17:51 下午 org.springframework.context.support.GenericApplicationContext doClose
 ```
 
-# springboot 整合使用
-
-## maven 引入
-
-```xml
-<dependency>
-    <groupId>com.github.houbb</groupId>
-    <artifactId>auto-log-springboot-starter</artifactId>
-    <version>最新版本</version>
-</dependency>
-```
-
-只需要引入 jar 即可，其他的什么都不用配置。
-
-使用方式和 spring 一致。
-
-## 测试
-
-```java
-@Autowired
-private UserService userService;
-
-@Test
-public void queryLogTest() {
-    userService.query("spring-boot");
-}
-```
-
 ## 切面自定义
+
+### 原理解释
 
 spring aop 的切面读取自 `@Value("${auto.log.pointcut}")`，默认为值 `@within(com.github.houbb.auto.log.annotation.AutoLog)||@annotation(com.github.houbb.auto.log.annotation.AutoLog)`
 
@@ -304,6 +278,8 @@ spring aop 的切面读取自 `@Value("${auto.log.pointcut}")`，默认为值 `@
 当然，这并不够方便，我们希望可以想平时写 aop 注解一样，指定 spring aop 的扫描范围，直接在 spring 中指定一下 `auto.log.pointcut` 的属性值即可。
 
 ### 测试例子
+
+> [完整测试代码](https://github.com/houbb/auto-log/blob/master/auto-log-test/src/test/java/com/github/houbb/auto/log/dynamic/SpringDynamicServiceTest.java)
 
 我们在配置文件 `autoLogConfig.properties` 中自定义下包扫描的范围：
 
@@ -367,6 +343,34 @@ public class SpringDynamicServiceTest {
 }
 ```
 
+# springboot 整合使用
+
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>auto-log-springboot-starter</artifactId>
+    <version>最新版本</version>
+</dependency>
+```
+
+只需要引入 jar 即可，其他的什么都不用配置。
+
+使用方式和 spring 一致。
+
+## 测试
+
+```java
+@Autowired
+private UserService userService;
+
+@Test
+public void queryLogTest() {
+    userService.query("spring-boot");
+}
+```
+
 # 开源地址
 
 > Github: [https://github.com/houbb/auto-log](https://github.com/houbb/auto-log)
@@ -375,7 +379,7 @@ public class SpringDynamicServiceTest {
 
 # Road-Map
 
-- [ ] 改进 interceptor 拦截器
+- [ ] 改进 interceptor 拦截器，类似 dubbo filter
 
 - [ ] 优化日志中的方法路径名称
 
@@ -387,9 +391,11 @@ public class SpringDynamicServiceTest {
 
 参考 sandglass 中如何加载注解中的配置信息？
 
-- [ ] jvm-sandbox 特性
+- [ ] 编译时注解特性 类似 aspectj
 
-- [ ] 编译时注解特性 
+- [ ] 基于 agent 特性，类似 sky-walking
+
+- [ ] traceId 等更多特性和 mdc 等进行整合
 
 # 开源矩阵
 
