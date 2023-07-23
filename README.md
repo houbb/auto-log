@@ -228,6 +228,16 @@ public String paramFilter() {
 
 完整示例参考 [SpringServiceTest](https://github.com/houbb/auto-log/tree/master/auto-log-test/src/test/java/com/github/houbb/auto/log/spring/SpringServiceTest.java)
 
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>auto-log-spring</artifactId>
+    <version>0.3.0</version>
+</dependency>
+```
+
 ## 注解声明
 
 使用 `@EnableAutoLog` 启用自动日志输出
@@ -351,7 +361,7 @@ public class SpringDynamicServiceTest {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-springboot-starter</artifactId>
-    <version>最新版本</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
