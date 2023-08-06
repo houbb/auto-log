@@ -1,6 +1,5 @@
 package com.github.houbb.auto.log.annotation;
 
-import com.github.houbb.auto.log.api.IAutoLogInterceptor;
 import com.github.houbb.auto.log.api.IParamFilter;
 import com.github.houbb.id.api.Id;
 
@@ -67,7 +66,7 @@ public @interface AutoLog {
      * @return 耗时
      * @since 0.0.1
      */
-    boolean costTime() default false;
+    boolean costTime() default true;
 
     /**
      * 是否输出异常信息
@@ -111,14 +110,7 @@ public @interface AutoLog {
      * @return 结果
      * @since 0.0.16
      */
-    boolean enableTraceId() default true;
-
-    /**
-     * 具体的拦截器实现
-     * @since 0.0.10
-     * @return 拦截器实现类
-     */
-    Class<? extends IAutoLogInterceptor>[] interceptor() default {IAutoLogInterceptor.class};
+    boolean enableTraceId() default false;
 
     /**
      * 指定参数过滤器

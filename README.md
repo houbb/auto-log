@@ -35,9 +35,21 @@
 
 - 支持 spring aop 注解切面自定义
 
+- 支持类似 dubbo filter 的拦截器链式调用
+
 ## 变更日志
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
+
+## 拓展阅读
+
+[java 注解结合 spring aop 实现自动输出日志](https://juejin.cn/post/6867895872445743111?searchId=20230806151304153EF6BD4DC5294073F2)
+
+[java 注解结合 spring aop 实现日志traceId唯一标识](https://juejin.cn/post/6869386703073886215?searchId=20230806151304153EF6BD4DC5294073F2)
+
+[java 注解结合 spring aop 自动输出日志新增拦截器与过滤器](https://juejin.cn/post/6876647817687859207?searchId=20230806151304153EF6BD4DC5294073F2)
+
+[如何动态修改 spring aop 切面信息？让自动日志输出框架更好用](https://juejin.cn/post/7258483153869865020?searchId=20230806151304153EF6BD4DC5294073F2)
 
 # 快速开始
 
@@ -47,7 +59,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
 </dependency>
 ```
 
@@ -61,9 +73,20 @@ userService.queryLog("1");
 - 日志如下
 
 ```
-[INFO] [2020-05-29 16:24:06.227] [main] [c.g.h.a.l.c.s.i.AutoLogMethodInterceptor.invoke] - public java.lang.String com.github.houbb.auto.log.test.service.impl.UserServiceImpl.queryLog(java.lang.String) param is [1]
-[INFO] [2020-05-29 16:24:06.228] [main] [c.g.h.a.l.c.s.i.AutoLogMethodInterceptor.invoke] - public java.lang.String com.github.houbb.auto.log.test.service.impl.UserServiceImpl.queryLog(java.lang.String) result is result-1
+信息: [TID=9d5ad747342e4f909d42001f1419c58b][METHOD=com.github.houbb.auto.log.test.service.impl.UserServiceImpl.queryLog:java.lang.String#查询日志][PARAM=["1"]][RESULT="result-1"][COST=607 ms]
 ```
+
+### 属性说明 
+
+| 属性     | 说明    |
+|:-------|:------|
+| TID    | 日志跟踪号 |
+| METHOD | 方法签名  |
+| PARAM  | 方法入参  |
+| RESULT | 方法出参  |
+| COST   | 方法耗时  |
+| SLOW-THRESHOLD   | 慢日志阈值 |
+| EXCEPTION   | 方法异常  |
 
 ### 代码
 
@@ -87,40 +110,13 @@ public interface UserService {
 public class UserServiceImpl implements UserService {
 
     @Override
-    @AutoLog
+    @AutoLog(description = "查询日志", enableTraceId = true)
     public String queryLog(String id) {
         return "result-"+id;
     }
 
 }
 ```
-
-## TraceId 的例子
-
-### 代码
-
-```java
-UserService service =  AutoLogProxy.getProxy(new UserServiceImpl());
-service.traceId("1");
-```
-
-其中 traceId 方法如下：
-
-```java
-@AutoLog
-public String traceId(String id) {
-    return id+"-1";
-}
-```
-
-### 测试效果
-
-```
-信息: [ba7ddaded5a644e5a58fbd276b6657af] <traceId>入参: [1].
-信息: [ba7ddaded5a644e5a58fbd276b6657af] <traceId>出参：1-1.
-```
-
-其中 ba7ddaded5a644e5a58fbd276b6657af 就是对应的 traceId，可以贯穿整个 thread 周期，便于我们日志查看。
 
 # 注解说明
 
@@ -137,7 +133,6 @@ public String traceId(String id) {
 | exception | boolean | true | 是否打印异常 |
 | slowThresholdMills | long | -1 | 当这个值大于等于 0 时，且耗时超过配置值，会输出慢日志 |
 | description | string |"" | 方法描述，默认选择方法名称 |
-| interceptor | Class[] | 默认实现 | 拦截器实现，支持指定多个和自定义 |
 | paramFilter | Class | WebParamFilter | 入参过滤器，支持自定义 |
 | traceId | Class | Id.class | 日志跟踪号生成策略 |
 | enableTraceId | boolean | true | 是否启用 traceId 的变化 |
@@ -150,43 +145,67 @@ public String traceId(String id) {
 
 ### 内置拦截器
 
-`AutoLogInterceptor` 默认实现
+`AutoLogCommonFilter` 默认日志增强实现
 
 ### 定义
 
-直接继承自 `AbstractAutoLogInterceptor` 类，并且实现对应的方法即可。
+直接实现 `CommonFilter` 类，并且实现对应的方法即可。
 
 ```java
-public class MyAutoLogInterceptor extends AbstractAutoLogInterceptor {
+package com.github.houbb.auto.log.test.interceptor;
+
+import com.github.houbb.auto.log.core.constant.AutoLogAttachmentKeyConst;
+import com.github.houbb.common.filter.annotation.FilterActive;
+import com.github.houbb.common.filter.api.CommonFilter;
+import com.github.houbb.common.filter.api.Invocation;
+import com.github.houbb.common.filter.api.Invoker;
+import com.github.houbb.common.filter.api.Result;
+import com.github.houbb.common.filter.exception.CommonFilterException;
+
+/**
+ * 自定义日志拦截器
+ * @author binbin.hou
+ * @since 0.0.12
+ */
+@FilterActive(order = 1)
+public class MyAutoLogInterceptor implements CommonFilter {
 
     @Override
-    protected void doBefore(AutoLog autoLog, IAutoLogInterceptorContext context) {
-        System.out.println("自定义入参：" + Arrays.toString(context.filterParams()));
-    }
+    public Result invoke(Invoker invoker, Invocation invocation) throws CommonFilterException {
+        final String tid = (String) invocation.getAttachment(AutoLogAttachmentKeyConst.AUTO_LOG_TRACE_ID);
+        System.out.println("my test filter before " + tid);
+        Result result = invoker.invoke(invocation);
+        System.out.println("my test filter after " + tid);
 
-    @Override
-    protected void doAfter(AutoLog autoLog, Object result, IAutoLogInterceptorContext context) {
-        System.out.println("自定义出参：" + result);
-    }
-
-    @Override
-    protected void doException(AutoLog autoLog, Exception exception, IAutoLogInterceptorContext context) {
-        System.out.println("自定义异常：");
-        exception.printStackTrace();
+        return result;
     }
 
 }
 ```
 
+我们可以通过 `@FilterActive(order = 1)` 指定拦截器执行的顺序，数值越小，越先执行。
+
+`invocation.getAttachment(AutoLogAttachmentKeyConst.AUTO_LOG_TRACE_ID)` 可以获取 invocation 中传递的属性。
+
 ### 使用
 
-如下，这样日志输出，就会使用上面的指定策略。
+SPI 指定
 
-```java
-@AutoLog(interceptor = MyAutoLogInterceptor.class)
-public String my() {
-    return "自定义策略";
-}
+创建文件 `resources\META-INF\services\com.github.houbb.common.filter.api.CommonFilter`
+
+在文件中指定我们定义的接口：
+
+```
+com.github.houbb.auto.log.test.interceptor.MyAutoLogInterceptor
+```
+
+### 测试效果
+
+```
+my test filter before 2bc181d4efb8408e948072022c9227c0
+my test filter after 2bc181d4efb8408e948072022c9227c0
+八月 06, 2023 8:13:19 下午 com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogCommonFilter info
+信息: [TID=2bc181d4efb8408e948072022c9227c0][METHOD=com.github.houbb.auto.log.test.service.impl.UserServiceImpl.queryLog:java.lang.String#查询日志][PARAM=["1"]][RESULT="result-1"][COST=535 ms]
 ```
 
 ## 自定义入参过滤器（paramFilter）
@@ -234,7 +253,7 @@ public String paramFilter() {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-spring</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
 </dependency>
 ```
 
@@ -361,7 +380,7 @@ public class SpringDynamicServiceTest {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-springboot-starter</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
 </dependency>
 ```
 
@@ -389,9 +408,9 @@ public void queryLogTest() {
 
 # Road-Map
 
-- [ ] 改进 interceptor 拦截器，类似 dubbo filter
+- [x] 改进 interceptor 拦截器，类似 dubbo filter
 
-- [ ] 优化日志中的方法路径名称
+- [x] 优化日志中的方法路径名称
 
 考虑补全对应的类信息
 

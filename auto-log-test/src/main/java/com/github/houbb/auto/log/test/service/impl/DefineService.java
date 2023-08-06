@@ -17,7 +17,7 @@ public class DefineService {
      * @return 结果
      * @since 0.0.10
      */
-    @AutoLog(interceptor = MyAutoLogInterceptor.class)
+    @AutoLog
     public String interceptor() {
         return "自定义策略";
     }

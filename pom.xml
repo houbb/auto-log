@@ -12,7 +12,7 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
@@ -39,7 +39,7 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.2.0</heaven.version>
+        <heaven.version>0.3.0</heaven.version>
         <log-integration.version>1.1.8</log-integration.version>
         <aop.version>0.0.4</aop.version>
         <test.version>0.0.1</test.version>
@@ -117,6 +117,11 @@
                 <groupId>com.github.houbb</groupId>
                 <artifactId>test-spring</artifactId>
                 <version>${test.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>common-filter</artifactId>
+                <version>1.1.0</version>
             </dependency>
 
             <!--============================== OTHER ==============================-->
