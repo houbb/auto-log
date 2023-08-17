@@ -3,7 +3,10 @@ package com.github.houbb.auto.log.core.support.interceptor.chain;
 import com.alibaba.fastjson.JSON;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.api.IAutoLogContext;
+import com.github.houbb.auto.log.api.IAutoLogSampleCondition;
+import com.github.houbb.auto.log.api.IAutoLogSampleConditionContext;
 import com.github.houbb.auto.log.core.constant.AutoLogAttachmentKeyConst;
+import com.github.houbb.auto.log.core.support.sample.AutoLogSampleConditionContext;
 import com.github.houbb.common.filter.annotation.FilterActive;
 import com.github.houbb.common.filter.api.CommonFilter;
 import com.github.houbb.common.filter.api.Invocation;
@@ -141,6 +144,28 @@ public class AutoLogCommonFilter implements CommonFilter {
     }
 
     /**
+     * 计算采样条件
+     * @param autoLogContext 上下文
+     * @param traceId 日志跟踪号
+     * @param description 方法描述
+     * @param resultValue 返回值
+     * @param invocation 调用上下文
+     * @return 是否
+     * @since 0.5.0
+     */
+    private boolean calcSampleCondition(final IAutoLogContext autoLogContext,
+                                        final String traceId,
+                                        final String description,
+                                        final Object resultValue,
+                                        Invocation invocation) {
+        // TODO: 判断是否需要增强
+        final IAutoLogSampleCondition sampleCondition = autoLogContext.sampleCondition();
+        IAutoLogSampleConditionContext conditionContext = new AutoLogSampleConditionContext();
+        boolean condition = sampleCondition.sampleCondition(conditionContext);
+        return condition;
+    }
+
+    /**
      * 增强日志输出
      * @param autoLogContext 上下文
      * @param traceId 日志跟踪号
@@ -153,6 +178,12 @@ public class AutoLogCommonFilter implements CommonFilter {
                                final String description,
                                final Object resultValue,
                                Invocation invocation) {
+        // 采样条件
+        boolean condition = calcSampleCondition(autoLogContext, traceId, description, resultValue, invocation);
+        if(!condition) {
+            return;
+        }
+
         final AutoLog autoLog = autoLogContext.autoLog();
 
         StringBuilder logBuilder = new StringBuilder();

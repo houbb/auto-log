@@ -2,16 +2,13 @@ package com.github.houbb.auto.log.spring.aop;
 
 import com.github.houbb.aop.spring.util.SpringAopUtil;
 import com.github.houbb.auto.log.annotation.AutoLog;
-import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
+import com.github.houbb.auto.log.core.support.sample.AlwaysTrueAutoLogSampleCondition;
 import com.github.houbb.auto.log.spring.context.SpringAopAutoLogContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
@@ -92,10 +89,14 @@ public class AutoLogAop {
             return point.proceed();
         }
         // 如果存在，则执行切面的逻辑
-        IAutoLogContext logContext = SpringAopAutoLogContext.newInstance()
-                .method(method)
+        SpringAopAutoLogContext logContext = SpringAopAutoLogContext.newInstance();
+        logContext.method(method)
                 .autoLog(autoLog)
-                .point(point);
+                .params(point.getArgs());
+        logContext.point(point);
+
+        //TODO 采样
+        logContext.sampleCondition(new AlwaysTrueAutoLogSampleCondition());
 
         return AutoLogBs.newInstance()
                 .context(logContext)

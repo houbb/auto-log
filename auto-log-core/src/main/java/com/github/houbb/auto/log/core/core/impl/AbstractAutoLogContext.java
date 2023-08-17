@@ -2,6 +2,7 @@ package com.github.houbb.auto.log.core.core.impl;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.api.IAutoLogContext;
+import com.github.houbb.auto.log.api.IAutoLogSampleCondition;
 
 import java.lang.reflect.Method;
 
@@ -29,6 +30,13 @@ public abstract class AbstractAutoLogContext implements IAutoLogContext {
      * @since 0.0.7
      */
     private Method method;
+
+    /**
+     * 采样条件
+     *
+     * @since 0.5.0
+     */
+    private IAutoLogSampleCondition sampleCondition;
 
     @Override
     public AutoLog autoLog() {
@@ -60,4 +68,13 @@ public abstract class AbstractAutoLogContext implements IAutoLogContext {
         return this;
     }
 
+    @Override
+    public IAutoLogSampleCondition sampleCondition() {
+        return sampleCondition;
+    }
+
+    public AbstractAutoLogContext sampleCondition(IAutoLogSampleCondition sampleCondition) {
+        this.sampleCondition = sampleCondition;
+        return this;
+    }
 }

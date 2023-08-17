@@ -1,34 +1,11 @@
 package com.github.houbb.auto.log.core.core.impl;
 
-import com.github.houbb.auto.log.annotation.AutoLog;
-import com.github.houbb.auto.log.api.IAutoLogContext;
-
-import java.lang.reflect.Method;
-
 /**
  * 自动日志输出上下文
  * @author binbin.hou
  * @since 0.0.7
  */
-public class SimpleAutoLogContext implements IAutoLogContext {
-
-    /**
-     * 注解信息
-     * @since 0.0.7
-     */
-    private AutoLog autoLog;
-
-    /**
-     * 参数信息
-     * @since 0.0.7
-     */
-    private Object[] params;
-
-    /**
-     * 方法信息
-     * @since 0.0.7
-     */
-    private Method method;
+public class SimpleAutoLogContext extends AbstractAutoLogContext {
 
     /**
      * 目标对象
@@ -38,11 +15,6 @@ public class SimpleAutoLogContext implements IAutoLogContext {
 
     public static SimpleAutoLogContext newInstance() {
         return new SimpleAutoLogContext();
-    }
-
-    @Override
-    public AutoLog autoLog() {
-        return autoLog;
     }
 
     public Object target() {
@@ -55,37 +27,8 @@ public class SimpleAutoLogContext implements IAutoLogContext {
     }
 
     @Override
-    public Object[] params() {
-        return params;
-    }
-
-    public SimpleAutoLogContext params(Object[] params) {
-        this.params = params;
-        return this;
-    }
-
-    @Override
-    public Method method() {
-        return method;
-    }
-
-    public SimpleAutoLogContext method(Method method) {
-        this.method = method;
-        AutoLog autoLog = method.getAnnotation(AutoLog.class);
-        Class<?> clazz = method.getDeclaringClass();
-
-        if(autoLog == null) {
-            autoLog = clazz.getAnnotation(AutoLog.class);
-        }
-
-        this.autoLog = autoLog;
-
-        return this;
-    }
-
-    @Override
     public Object process() throws Exception {
-        return method.invoke(target, params);
+        return super.method().invoke(target, super.params());
     }
 
 }

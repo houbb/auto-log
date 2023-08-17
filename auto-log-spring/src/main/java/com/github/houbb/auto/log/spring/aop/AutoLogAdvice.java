@@ -1,8 +1,8 @@
 package com.github.houbb.auto.log.spring.aop;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
-import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
+import com.github.houbb.auto.log.core.support.sample.AlwaysTrueAutoLogSampleCondition;
 import com.github.houbb.auto.log.spring.config.DefaultAutoLogGlobalConfig;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -22,14 +22,14 @@ public class AutoLogAdvice implements MethodInterceptor {
         //1. 方法级别
         Method method = methodInvocation.getMethod();
         AutoLog autoLog = AnnotationUtils.getAnnotation(method, AutoLog.class);
-        if(autoLog != null) {
+        if (autoLog != null) {
             return autoLog;
         }
 
         //2. 类级别
         final Class<?> targetClass = methodInvocation.getThis().getClass();
         autoLog = targetClass.getAnnotation(AutoLog.class);
-        if(autoLog != null) {
+        if (autoLog != null) {
             return autoLog;
         }
 
@@ -42,12 +42,13 @@ public class AutoLogAdvice implements MethodInterceptor {
         AutoLog autoLog = getAutoLogAnnotation(methodInvocation);
 
         // 如果存在，则执行切面的逻辑
-        IAutoLogContext logContext = AutoLogAdviceContext.newInstance()
-                .methodInvocation(methodInvocation)
+        AutoLogAdviceContext logContext = AutoLogAdviceContext.newInstance();
+        logContext.methodInvocation(methodInvocation)
                 .method(methodInvocation.getMethod())
                 .autoLog(autoLog)
                 .params(methodInvocation.getArguments())
-                ;
+                .sampleCondition(new AlwaysTrueAutoLogSampleCondition())
+        ;
 
         return AutoLogBs.newInstance()
                 .context(logContext)

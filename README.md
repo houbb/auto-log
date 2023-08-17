@@ -410,11 +410,15 @@ public void queryLogTest() {
 
 # Road-Map
 
+- [ ] 采样策略
+
+概率
+
+自适应
+
 - [x] 改进 interceptor 拦截器，类似 dubbo filter
 
 - [x] 优化日志中的方法路径名称
-
-考虑补全对应的类信息
 
 - [ ] 全局配置
 
@@ -427,6 +431,10 @@ public void queryLogTest() {
 - [ ] 基于 agent 特性，类似 sky-walking
 
 - [ ] traceId 等更多特性和 mdc 等进行整合
+
+- [ ] 跨线程的处理 + TTL
+
+- [ ] mybatis 拦截器/web 拦截器/rpc 拦截器
 
 # 开源矩阵
 

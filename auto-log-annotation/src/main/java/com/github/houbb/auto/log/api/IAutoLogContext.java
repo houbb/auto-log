@@ -40,4 +40,10 @@ public interface IAutoLogContext {
      */
     Object process() throws Throwable;
 
+    /**
+     * 采样条件
+     * @return 条件
+     * @since 0.5.0
+     */
+    IAutoLogSampleCondition sampleCondition();
 }
