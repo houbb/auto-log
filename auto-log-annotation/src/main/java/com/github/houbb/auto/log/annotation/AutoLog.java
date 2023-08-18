@@ -1,5 +1,6 @@
 package com.github.houbb.auto.log.annotation;
 
+import com.github.houbb.auto.log.api.IAutoLogSampleCondition;
 import com.github.houbb.auto.log.api.IParamFilter;
 import com.github.houbb.id.api.Id;
 
@@ -120,5 +121,19 @@ public @interface AutoLog {
      * @since 0.0.12
      */
     Class<? extends IParamFilter> paramFilter() default IParamFilter.class;
+
+    /**
+     * 采样条件
+     * @return 采样
+     * @since 0.5.0
+     */
+    Class<? extends IAutoLogSampleCondition> sampleCondition() default IAutoLogSampleCondition.class;
+
+    /**
+     * 采样率 0-100，只有当采样策略为随机的 Rate 的时候才会生效。
+     * @return 条件概率
+     * @since 0.5.0
+     */
+    int sampleRate() default 100;
 
 }

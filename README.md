@@ -61,7 +61,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -255,7 +255,7 @@ public String paramFilter() {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-spring</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -382,7 +382,7 @@ public class SpringDynamicServiceTest {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-springboot-starter</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -410,11 +410,17 @@ public void queryLogTest() {
 
 # Road-Map
 
-- [ ] 采样策略
+- [ ] distributed trace
 
-概率
+全链路
 
-自适应
+mq/rpc/http 等
+
+任务调度、异步执行
+
+- [x] 比例采样策略
+
+- [ ] 自适应采样策略 
 
 - [x] 改进 interceptor 拦截器，类似 dubbo filter
 

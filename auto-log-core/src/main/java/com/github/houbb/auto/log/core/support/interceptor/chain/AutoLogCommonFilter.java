@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.api.IAutoLogSampleCondition;
-import com.github.houbb.auto.log.api.IAutoLogSampleConditionContext;
 import com.github.houbb.auto.log.core.constant.AutoLogAttachmentKeyConst;
-import com.github.houbb.auto.log.core.support.sample.AutoLogSampleConditionContext;
+import com.github.houbb.auto.log.core.support.sample.AutoLogSampleConditionRate;
+import com.github.houbb.auto.log.core.support.sample.AutoLogSampleConditions;
 import com.github.houbb.common.filter.annotation.FilterActive;
 import com.github.houbb.common.filter.api.CommonFilter;
 import com.github.houbb.common.filter.api.Invocation;
@@ -158,11 +158,23 @@ public class AutoLogCommonFilter implements CommonFilter {
                                         final String description,
                                         final Object resultValue,
                                         Invocation invocation) {
-        // TODO: 判断是否需要增强
-        final IAutoLogSampleCondition sampleCondition = autoLogContext.sampleCondition();
-        IAutoLogSampleConditionContext conditionContext = new AutoLogSampleConditionContext();
-        boolean condition = sampleCondition.sampleCondition(conditionContext);
-        return condition;
+        final AutoLog autoLog = autoLogContext.autoLog();
+        Class<? extends IAutoLogSampleCondition> sampleConditionClass = autoLog.sampleCondition();
+
+        // 默认
+        if(sampleConditionClass.equals(IAutoLogSampleCondition.class)) {
+            return true;
+        }
+
+        // 如果是概率
+        if(sampleConditionClass.equals(AutoLogSampleConditionRate.class)) {
+            int sampleRate = autoLog.sampleRate();
+            return AutoLogSampleConditions.rate(sampleRate).sampleCondition(autoLogContext);
+        }
+
+        // 其他
+        IAutoLogSampleCondition sampleCondition = ClassUtil.newInstance(sampleConditionClass);
+        return sampleCondition.sampleCondition(autoLogContext);
     }
 
     /**

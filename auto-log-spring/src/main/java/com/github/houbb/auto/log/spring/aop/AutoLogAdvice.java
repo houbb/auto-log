@@ -2,7 +2,6 @@ package com.github.houbb.auto.log.spring.aop;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
-import com.github.houbb.auto.log.core.support.sample.AlwaysTrueAutoLogSampleCondition;
 import com.github.houbb.auto.log.spring.config.DefaultAutoLogGlobalConfig;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -47,7 +46,6 @@ public class AutoLogAdvice implements MethodInterceptor {
                 .method(methodInvocation.getMethod())
                 .autoLog(autoLog)
                 .params(methodInvocation.getArguments())
-                .sampleCondition(new AlwaysTrueAutoLogSampleCondition())
         ;
 
         return AutoLogBs.newInstance()

@@ -14,6 +14,6 @@ public interface IAutoLogSampleCondition {
      * @return 结果
      * @since 0.5.0
      */
-    boolean sampleCondition(IAutoLogSampleConditionContext context);
+    boolean sampleCondition(IAutoLogContext context);
 
 }

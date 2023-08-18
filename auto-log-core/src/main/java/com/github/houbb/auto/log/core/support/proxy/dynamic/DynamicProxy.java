@@ -5,7 +5,6 @@
 
 package com.github.houbb.auto.log.core.support.proxy.dynamic;
 
-import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
 import com.github.houbb.auto.log.core.core.impl.SimpleAutoLogContext;
 import com.github.houbb.auto.log.core.support.proxy.IAutoLogProxy;
@@ -17,7 +16,7 @@ import java.util.concurrent.CompletionService;
 
 /**
  * <p> 动态代理 </p>
- *
+ * <p>
  * 1. 对于 executor 的抽象，使用 {@link CompletionService}
  * 2. 确保唯一初始化 executor，在任务执行的最后关闭 executor。
  * 3. 异步执行结果的获取，异常信息的获取。
@@ -41,19 +40,24 @@ public class DynamicProxy implements InvocationHandler, IAutoLogProxy {
     /**
      * 这种方式虽然实现了异步执行，但是存在一个缺陷：
      * 强制用户返回值为 Future 的子类。
-     *
+     * <p>
      * 如何实现不影响原来的值，要怎么实现呢？
-     * @param proxy 原始对象
+     *
+     * @param proxy  原始对象
      * @param method 方法
-     * @param args 入参
+     * @param args   入参
      * @return 结果
      * @throws Throwable 异常
      */
     @Override
     @SuppressWarnings("all")
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        IAutoLogContext context = SimpleAutoLogContext.newInstance()
-                .method(method).params(args).target(target);
+        SimpleAutoLogContext context = SimpleAutoLogContext.newInstance();
+        context.method(method)
+                .params(args)
+        ;
+
+        context.target(target);
         return AutoLogBs.newInstance().context(context).execute();
     }
 
