@@ -11,8 +11,6 @@ public class InnerRandomUtil {
     /**
      * 1. 计算一个 1-100 的随机数 randomVal
      * 2. targetRatePercent 值越大，则返回 true 的概率越高
-     * 所以直接根据 targetRatePercent >= randomVal 判断
-     *
      * @param targetRatePercent 目标百分比
      * @return 结果
      */
