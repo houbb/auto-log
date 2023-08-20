@@ -37,9 +37,15 @@
 
 - 支持类似 dubbo filter 的拦截器链式调用
 
+- 支持日志条件输出，支持日志自适应输出
+
 ## 变更日志
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
+
+V0.6.0 变更
+
+- 添加自适应日志策略
 
 ## 拓展阅读
 
@@ -61,7 +67,7 @@
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -255,7 +261,7 @@ public String paramFilter() {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-spring</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -382,7 +388,7 @@ public class SpringDynamicServiceTest {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-springboot-starter</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -420,7 +426,7 @@ mq/rpc/http 等
 
 - [x] 比例采样策略
 
-- [ ] 自适应采样策略 
+- [x] 自适应采样策略 
 
 - [x] 改进 interceptor 拦截器，类似 dubbo filter
 

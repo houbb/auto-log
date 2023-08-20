@@ -3,11 +3,14 @@ package com.github.houbb.auto.log.core.support.sample;
 import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.api.IAutoLogSampleCondition;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 自适应采样
+ * 自适应采样-时间窗口
  *
  * 1. 初始化采样率为 100%，全部采样
  *
@@ -41,24 +44,24 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author d
  * @since 0.5.0
  */
-public class AutoLogSampleConditionAdaptive implements IAutoLogSampleCondition {
+public class AutoLogSampleConditionAdaptiveSchedule implements IAutoLogSampleCondition {
 
-    private static final AutoLogSampleConditionAdaptive INSTANCE = new AutoLogSampleConditionAdaptive();
+    private static final AutoLogSampleConditionAdaptiveSchedule INSTANCE = new AutoLogSampleConditionAdaptiveSchedule();
 
     /**
      * 单例的方式获取实例
      * @return 结果
      */
-    public static AutoLogSampleConditionAdaptive getInstance() {
+    public static AutoLogSampleConditionAdaptiveSchedule getInstance() {
         return INSTANCE;
     }
 
+    private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+
     /**
-     * 次数大小限制，即接收到多少次请求更新一次 adaptive 计算
-     *
-     * TODO: 这个如何可以让用户可以自定义呢？后续考虑配置从默认的配置文件中读取。
+     * 时间分钟间隔
      */
-    private static final int COUNT_LIMIT = 1000;
+    private static final int TIME_INTERVAL_MINUTES = 5;
 
     /**
      * 自适应比率，初始化为 100.全部采集
@@ -66,35 +69,34 @@ public class AutoLogSampleConditionAdaptive implements IAutoLogSampleCondition {
     private volatile int adaptiveRate = 100;
 
     /**
-     * 上一次的 QPS
+     * 上一次的总数
      *
      * TODO: 这个如何可以让用户可以自定义呢？后续考虑配置从默认的配置文件中读取。
      */
-    private volatile double preQps = 100.0;
-
-    /**
-     * 上一次的时间
-     */
-    private volatile long preTime;
+    private volatile long preCount;
 
     /**
      * 总数，请求计数器
      */
-    private final AtomicInteger counter;
+    private final AtomicLong counter;
 
-    public AutoLogSampleConditionAdaptive() {
-        preTime = System.currentTimeMillis();
-        counter = new AtomicInteger(0);
+    public AutoLogSampleConditionAdaptiveSchedule() {
+        counter = new AtomicLong(0);
+        preCount = TIME_INTERVAL_MINUTES * 60 * 100;
+
+        //1. 1min 后开始执行
+        //2. 中间默认 5 分钟更新一次
+        EXECUTOR_SERVICE.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                updateAdaptiveRate();
+            }
+        }, 60, TIME_INTERVAL_MINUTES * 60, TimeUnit.SECONDS);
     }
 
     @Override
     public boolean sampleCondition(IAutoLogContext context) {
-        int count = counter.incrementAndGet();
-
-        // 触发一次重新计算
-        if(count >= COUNT_LIMIT) {
-            updateAdaptiveRate();
-        }
+        counter.incrementAndGet();
 
         // 直接计算是否满足
         return InnerRandomUtil.randomRateCondition(adaptiveRate);
@@ -103,29 +105,27 @@ public class AutoLogSampleConditionAdaptive implements IAutoLogSampleCondition {
     /**
      * 更新自适应的概率
      *
-     * 100 计算一次，其实还好。实际应该可以适当调大这个阈值，本身不会经常变化的东西。
+     * QPS = count / time_interval
+     *
+     * 其中时间维度是固定的，所以可以不用考虑时间。
      */
     private synchronized void updateAdaptiveRate() {
-        //消耗的毫秒数
-        long costTimeMs = System.currentTimeMillis() - preTime;
-        //qps 的计算，时间差是毫秒。所以次数需要乘以 1000
-        double currentQps = COUNT_LIMIT*1000.0 / costTimeMs;
-        // preRate * preQps = currentRate * currentQps; 保障采样均衡，服务器压力均衡
-        // currentRate = (preRate * preQps) / currentQps;
+        // preRate * preCount = currentRate * currentCount; 保障采样均衡，服务器压力均衡
+        // currentRate = (preRate * preCount) / currentCount;
         // 更新比率
+        long currentCount = counter.get();
         int newRate = 100;
-        if(currentQps > 0) {
-            newRate = (int) ((adaptiveRate * preQps) / currentQps);
+        if(currentCount != 0) {
+            newRate = (int) ((adaptiveRate * preCount) / currentCount);
             newRate = Math.min(100, newRate);
             newRate = Math.max(1, newRate);
         }
 
-        // 更新 rate
+        // 更新自适应频率
         adaptiveRate = newRate;
+
         // 更新 QPS
-        preQps = currentQps;
-        // 更新上一次的时间内戳
-        preTime = System.currentTimeMillis();
+        preCount = currentCount;
         // 归零
         counter.set(0);
     }
