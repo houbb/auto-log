@@ -28,23 +28,7 @@ public class AutoLogSampleConditionRate implements IAutoLogSampleCondition {
 
     @Override
     public boolean sampleCondition(IAutoLogContext context) {
-        if(rate <= 0) {
-            return false;
-        }
-        if(rate >= 100) {
-            return true;
-        }
-
-        // 随机
-        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
-        int value = threadLocalRandom.nextInt(1, 100);
-
-        // 随机概率
-        if(rate >= value) {
-            return false;
-        }
-
-        return true;
+        return InnerRandomUtil.randomRateCondition(rate);
     }
 
 }

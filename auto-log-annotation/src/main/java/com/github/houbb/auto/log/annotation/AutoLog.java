@@ -95,6 +95,8 @@ public @interface AutoLog {
 
     /**
      * trace id 策略
+     *
+     * TODO: id 全局策略考虑从配置文件中读取
      * @return 结果
      * @since 0.0.16
      */
@@ -130,7 +132,9 @@ public @interface AutoLog {
     Class<? extends IAutoLogSampleCondition> sampleCondition() default IAutoLogSampleCondition.class;
 
     /**
-     * 采样率 0-100，只有当采样策略为随机的 Rate 的时候才会生效。
+     * 采样值：
+     *
+     * 1. 当为 rate 采样时 0-100，只有当采样策略为随机的的时候才会生效。
      * @return 条件概率
      * @since 0.5.0
      */

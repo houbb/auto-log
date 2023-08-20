@@ -12,6 +12,12 @@ import org.springframework.stereotype.Service;
 public class SampleRateServiceImpl {
 
     @AutoLog(sampleCondition = AutoLogSampleConditionRate.class,
+            sampleRate = 30)
+    public void sample30Test(int value) {
+        System.out.println("i==" + value);
+    }
+
+    @AutoLog(sampleCondition = AutoLogSampleConditionRate.class,
         sampleRate = 50)
     public void sample50Test(int value) {
         System.out.println("i==" + value);

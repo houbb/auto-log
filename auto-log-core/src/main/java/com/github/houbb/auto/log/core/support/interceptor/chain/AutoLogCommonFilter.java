@@ -5,6 +5,7 @@ import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.api.IAutoLogSampleCondition;
 import com.github.houbb.auto.log.core.constant.AutoLogAttachmentKeyConst;
+import com.github.houbb.auto.log.core.support.sample.AutoLogSampleConditionAdaptive;
 import com.github.houbb.auto.log.core.support.sample.AutoLogSampleConditionRate;
 import com.github.houbb.auto.log.core.support.sample.AutoLogSampleConditions;
 import com.github.houbb.common.filter.annotation.FilterActive;
@@ -159,6 +160,12 @@ public class AutoLogCommonFilter implements CommonFilter {
                                         final Object resultValue,
                                         Invocation invocation) {
         final AutoLog autoLog = autoLogContext.autoLog();
+        if(autoLog == null) {
+            //TODO: 默认实现策略
+
+            return true;
+        }
+
         Class<? extends IAutoLogSampleCondition> sampleConditionClass = autoLog.sampleCondition();
 
         // 默认
@@ -170,6 +177,10 @@ public class AutoLogCommonFilter implements CommonFilter {
         if(sampleConditionClass.equals(AutoLogSampleConditionRate.class)) {
             int sampleRate = autoLog.sampleRate();
             return AutoLogSampleConditions.rate(sampleRate).sampleCondition(autoLogContext);
+        } else if(sampleConditionClass.equals(AutoLogSampleConditionAdaptive.class)) {
+            // 自适应
+            AutoLogSampleConditionAdaptive adaptive = AutoLogSampleConditionAdaptive.getInstance();
+            return adaptive.sampleCondition(autoLogContext);
         }
 
         // 其他

@@ -11,6 +11,14 @@ import org.junit.Test;
 public class AutoLogBsRateTest {
 
     @Test
+    public void rate30Test() {
+        SampleRateServiceImpl userService = AutoLogProxy.getProxy(new SampleRateServiceImpl());
+        for(int i = 0; i < 10; i++ ) {
+            userService.sample30Test(i);
+        }
+    }
+
+    @Test
     public void rate50Test() {
         SampleRateServiceImpl userService = AutoLogProxy.getProxy(new SampleRateServiceImpl());
         for(int i = 0; i < 10; i++ ) {
