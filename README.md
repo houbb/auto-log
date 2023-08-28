@@ -416,6 +416,10 @@ public void queryLogTest() {
 
 # Road-Map
 
+- [ ] JMX GC LOG
+
+- [ ] JMX thread/thread-pool info
+
 - [ ] distributed trace
 
 全链路
