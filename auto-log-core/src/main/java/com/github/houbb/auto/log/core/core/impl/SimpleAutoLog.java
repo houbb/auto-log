@@ -5,14 +5,12 @@ import com.github.houbb.auto.log.api.IAutoLog;
 import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.api.IParamFilter;
 import com.github.houbb.auto.log.api.IParamFilterContext;
-import com.github.houbb.auto.log.core.constant.AutoLogAttachmentKeyConst;
 import com.github.houbb.auto.log.core.support.filter.param.ParamFilterContext;
 import com.github.houbb.auto.log.core.support.filter.param.WebParamFilter;
+import com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogInvocation;
 import com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogInvoker;
-import com.github.houbb.common.filter.api.Invocation;
 import com.github.houbb.common.filter.api.Invoker;
 import com.github.houbb.common.filter.api.Result;
-import com.github.houbb.common.filter.support.invocation.CommonInvocation;
 import com.github.houbb.common.filter.support.invoke.InvokerChainBuilder;
 import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
 
@@ -37,10 +35,10 @@ public class SimpleAutoLog implements IAutoLog {
 
         //2. 调用链设置
         AutoLogInvoker autoLogInvoker = new AutoLogInvoker(context);
-        Invocation invocation = new CommonInvocation();
-        invocation.setAttachment(AutoLogAttachmentKeyConst.AUTO_LOG_CONTEXT, context);
-        invocation.setAttachment(AutoLogAttachmentKeyConst.AUTO_LOG_START_TIME, startTimeMills);
-        invocation.setAttachment(AutoLogAttachmentKeyConst.AUTO_LOG_FILTER_PARAMS, filterParams);
+        AutoLogInvocation invocation = new AutoLogInvocation();
+        invocation.setAutoLogContext(context);
+        invocation.setFilterParams(filterParams);
+        invocation.setStartTime(startTimeMills);
 
         Invoker chainInvoker = InvokerChainBuilder.buildInvokerChain(autoLogInvoker);
         Result autoLogResult = chainInvoker.invoke(invocation);

@@ -24,6 +24,7 @@ import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * 默认的日志拦截器
@@ -55,11 +56,13 @@ public class AutoLogCommonFilter implements CommonFilter {
      * @since 0.0.10
      */
     protected String getMethodDescription(Method method, AutoLog autoLog) {
-        String methodName = ReflectMethodUtil.getMethodFullName(method);
+        String methodName = "";
 
         if(autoLog != null
             && StringUtil.isNotEmpty(autoLog.description())) {
-            methodName += "#" + autoLog.description();
+            methodName = autoLog.description();
+        } else {
+            methodName = ReflectMethodUtil.getMethodFullName(method);
         }
 
         return methodName;
@@ -108,7 +111,8 @@ public class AutoLogCommonFilter implements CommonFilter {
 
     @Override
     public Result invoke(Invoker invoker, Invocation invocation) throws CommonFilterException {
-        final IAutoLogContext autoLogContext = (IAutoLogContext) invocation.getAttachment(AutoLogAttachmentKeyConst.AUTO_LOG_CONTEXT);
+        final AutoLogInvocation autoLogInvocation = (AutoLogInvocation) invocation;
+        final IAutoLogContext autoLogContext = autoLogInvocation.getAutoLogContext();
         final AutoLog autoLog = autoLogContext.autoLog();
         final boolean enableAutoLog = enableAutoLog(autoLog);
         if(!enableAutoLog) {
@@ -136,7 +140,7 @@ public class AutoLogCommonFilter implements CommonFilter {
             return result;
         } catch (Exception e) {
             if (autoLog.exception()) {
-                String message = String.format("[TID=%s][EXCEPTION=%s]", traceId, e.getMessage());
+                String message = String.format("[AUTO-LOG][TID=%s][EXCEPTION=%s]", traceId, e.getMessage());
                 LOG.error(message, e);
             }
 
@@ -201,6 +205,8 @@ public class AutoLogCommonFilter implements CommonFilter {
                                final String description,
                                final Object resultValue,
                                Invocation invocation) {
+        final AutoLogInvocation autoLogInvocation = (AutoLogInvocation) invocation;
+
         // 采样条件
         boolean condition = calcSampleCondition(autoLogContext, traceId, description, resultValue, invocation);
         if(!condition) {
@@ -210,22 +216,24 @@ public class AutoLogCommonFilter implements CommonFilter {
         final AutoLog autoLog = autoLogContext.autoLog();
 
         StringBuilder logBuilder = new StringBuilder();
+        logBuilder.append("[AUTO-LOG]");
         logBuilder.append(String.format("[TID=%s]", traceId));
         logBuilder.append(String.format("[METHOD=%s]", description));
 
         // 入参
         if(autoLog.param()) {
-            Object[] params = (Object[]) invocation.getAttachment(AutoLogAttachmentKeyConst.AUTO_LOG_FILTER_PARAMS);
-            logBuilder.append(String.format("[PARAM=%s]", JSON.toJSONString(params)));
+            Object[] params = autoLogInvocation.getFilterParams();
+            logBuilder.append(String.format("[PARAM=%s]", getParamsString(params)));
         }
         // 出参
         if (autoLog.result()) {
-            logBuilder.append(String.format("[RESULT=%s]", JSON.toJSONString(resultValue)));
+            Object actualResult = getActualResult(resultValue);
+            logBuilder.append(String.format("[RESULT=%s]", getResultString(actualResult)));
         }
         // 耗时
         //3.1 耗时 & 慢日志
         if(autoLog.costTime()) {
-            long startTime = (long) invocation.getAttachment(AutoLogAttachmentKeyConst.AUTO_LOG_START_TIME);
+            long startTime = autoLogInvocation.getStartTime();
             long costTime = System.currentTimeMillis() - startTime;
             logBuilder.append(String.format("[COST=%d ms]", costTime));
 
@@ -238,6 +246,59 @@ public class AutoLogCommonFilter implements CommonFilter {
 
         // 输出日志
         LOG.info(logBuilder.toString());
+    }
+
+    /**
+     * 获取参数字符串
+     * @param params 入参
+     * @return 结果
+     */
+    protected String getParamsString(Object[] params) {
+        if(params == null) {
+            return null;
+        }
+
+        try {
+            return JSON.toJSONString(params);
+        } catch (Exception e) {
+            return Arrays.toString(params);
+        }
+    }
+
+    /**
+     * 获取结果字符串
+     * @param result 结果
+     * @return 结果
+     */
+    protected String getResultString(Object result) {
+        if(result == null) {
+            return null;
+        }
+
+        try {
+            return JSON.toJSONString(result);
+        } catch (Exception e) {
+            return result.toString();
+        }
+    }
+
+    /**
+     * 获取真正的结果只
+     * @param resultVal 结果值
+     * @return 结构
+     * @since 0.7.0
+     */
+    protected Object getActualResult(Object resultVal) {
+        if(resultVal == null) {
+            return null;
+        }
+        // dubbo 处理
+        if(resultVal instanceof org.apache.dubbo.rpc.Result) {
+            org.apache.dubbo.rpc.Result result = (org.apache.dubbo.rpc.Result) resultVal;
+            return result.getValue();
+        }
+
+        return resultVal;
     }
 
 }

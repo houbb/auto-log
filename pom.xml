@@ -12,14 +12,14 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
+        <module>auto-log-core-extra</module>
         <module>auto-log-spring</module>
         <module>auto-log-springboot-starter</module>
         <module>auto-log-test</module>
-        <module>auto-log-core-extra</module>
     </modules>
 
     <properties>
@@ -50,6 +50,7 @@
         <spring-boot.version>1.5.22.RELEASE</spring-boot.version>
         <spring.version>4.3.15.RELEASE</spring.version>
         <fastjson.version>1.2.83</fastjson.version>
+        <dubbo.version>2.7.7</dubbo.version>
     </properties>
 
     <dependencyManagement>

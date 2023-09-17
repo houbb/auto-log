@@ -1,0 +1,2 @@
+autoLogDubboConsumerFilter=com.github.houbb.auto.log.core.support.dubbo.filter.AutoLogDubboConsumerFilter
+autoLogDubboProviderFilter=com.github.houbb.auto.log.core.support.dubbo.filter.AutoLogDubboProviderFilter

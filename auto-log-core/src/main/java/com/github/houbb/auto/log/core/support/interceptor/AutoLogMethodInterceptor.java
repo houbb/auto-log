@@ -19,6 +19,7 @@ import java.util.Arrays;
  * @since 0.0.2
  */
 @ThreadSafe
+@Deprecated
 public class AutoLogMethodInterceptor implements MethodInterceptor {
 
     private static final Log LOG = LogFactory.getLog(AutoLogMethodInterceptor.class);

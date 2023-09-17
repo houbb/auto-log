@@ -29,7 +29,7 @@ public final class AutoLogBs {
      * 实现类
      * @since 0.0.7
      */
-    private Class<? extends IAutoLog> autoLogClass = SimpleAutoLog.class;
+    private IAutoLog autoLog = new SimpleAutoLog();
 
     /**
      * 新建对象实例
@@ -40,15 +40,10 @@ public final class AutoLogBs {
         return new AutoLogBs();
     }
 
-    /**
-     * 设置实现类
-     * @param autoLogClass 实现类
-     * @return this
-     * @since 0.0.9
-     */
-    public AutoLogBs autoLogClass(Class<? extends IAutoLog> autoLogClass) {
-        ArgUtil.notNull(autoLogClass, "autoLogClass");
-        this.autoLogClass = autoLogClass;
+    public AutoLogBs autoLog(IAutoLog autoLog) {
+        ArgUtil.notNull(autoLog, "autoLog");
+
+        this.autoLog = autoLog;
         return this;
     }
 
@@ -68,7 +63,6 @@ public final class AutoLogBs {
      * @throws Throwable 执行异常
      */
     public Object execute() throws Throwable {
-        IAutoLog autoLog = ClassUtil.newInstance(autoLogClass);
         return autoLog.autoLog(context);
     }
 
