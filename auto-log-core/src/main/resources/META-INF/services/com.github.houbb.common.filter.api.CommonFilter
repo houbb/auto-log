@@ -1,1 +1,6 @@
+com.github.houbb.auto.log.core.support.interceptor.cache.AutoLogCacheInterceptor
 com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogCommonFilter
+com.github.houbb.auto.log.core.support.interceptor.jms.AutoLogJmsProducerInterceptor
+com.github.houbb.auto.log.core.support.interceptor.jms.AutoLogJmsConsumerInterceptor
+com.github.houbb.auto.log.core.support.interceptor.schedule.AutoLogScheduleInterceptor
+com.github.houbb.auto.log.core.support.interceptor.web.client.AutoLogHttpClientInterceptor
