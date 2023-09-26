@@ -1,13 +1,16 @@
-package com.github.houbb.auto.log.core.support.dubbo;
+package com.github.houbb.auto.log.core.support.interceptor.dubbo;
 
 import com.github.houbb.auto.log.core.core.impl.AbstractAutoLogContext;
 import org.apache.dubbo.rpc.Invocation;
 import org.apache.dubbo.rpc.Invoker;
 
 /**
- * @since 0.7.0
+ * 通用的调用上下文
+ *
+ * @author d
+ * @since 1.0.0
  */
-public class DubboAutoLogContext extends AbstractAutoLogContext {
+public class AutoLogDubboContext extends AbstractAutoLogContext {
 
     private Invoker<?> invoker;
 

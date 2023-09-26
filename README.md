@@ -43,7 +43,7 @@
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
-V0.6.0 变更
+V0.8.0 变更
 
 - 添加自适应日志策略
 
@@ -67,7 +67,7 @@ V0.6.0 变更
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.6.0</version>
+    <version>0.8.0</version>
 </dependency>
 ```
 
@@ -261,7 +261,7 @@ public String paramFilter() {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-spring</artifactId>
-    <version>0.6.0</version>
+    <version>0.8.0</version>
 </dependency>
 ```
 
@@ -388,7 +388,7 @@ public class SpringDynamicServiceTest {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-springboot-starter</artifactId>
-    <version>0.6.0</version>
+    <version>0.8.0</version>
 </dependency>
 ```
 
@@ -416,17 +416,9 @@ public void queryLogTest() {
 
 # Road-Map
 
-- [ ] JMX GC LOG
-
-- [ ] JMX thread/thread-pool info
-
 - [ ] distributed trace
 
-全链路
-
-mq/rpc/http 等
-
-任务调度、异步执行
+- [ ] 全局配置  比如全局的慢日志阈值设置等 参考 sandglass 中如何加载注解中的配置信息？（基于配置文件）
 
 - [x] 比例采样策略
 
@@ -436,21 +428,11 @@ mq/rpc/http 等
 
 - [x] 优化日志中的方法路径名称
 
-- [ ] 全局配置
-
-比如全局的慢日志阈值设置等
-
-参考 sandglass 中如何加载注解中的配置信息？
-
 - [ ] 编译时注解特性 类似 aspectj
 
 - [ ] 基于 agent 特性，类似 sky-walking
 
-- [ ] traceId 等更多特性和 mdc 等进行整合
-
-- [ ] 跨线程的处理 + TTL
-
-- [ ] mybatis 拦截器/web 拦截器/rpc 拦截器
+---------------------------------------------------
 
 - [ ] 流程
 

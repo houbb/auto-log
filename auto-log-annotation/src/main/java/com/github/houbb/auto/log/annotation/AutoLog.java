@@ -97,9 +97,13 @@ public @interface AutoLog {
      * trace id 策略
      *
      * TODO: id 全局策略考虑从配置文件中读取
+     *
+     * 直接废弃，直接以 auto-trace 的为准
+     *
      * @return 结果
      * @since 0.0.16
      */
+    @Deprecated
     Class<? extends Id> traceId() default Id.class;
 
     /**

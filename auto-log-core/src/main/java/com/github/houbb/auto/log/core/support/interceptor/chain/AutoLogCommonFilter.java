@@ -29,7 +29,7 @@ import java.util.Arrays;
 /**
  * 默认的日志拦截器
  */
-@FilterActive(order = Integer.MIN_VALUE)
+@FilterActive(order = AutoLogFilterChainConst.ORDER, group = AutoLogFilterChainConst.GROUP)
 public class AutoLogCommonFilter implements CommonFilter {
 
     private static final Log LOG = LogFactory.getLog(AutoLogCommonFilter.class);

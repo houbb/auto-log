@@ -7,6 +7,7 @@ import com.github.houbb.auto.log.api.IParamFilter;
 import com.github.houbb.auto.log.api.IParamFilterContext;
 import com.github.houbb.auto.log.core.support.filter.param.ParamFilterContext;
 import com.github.houbb.auto.log.core.support.filter.param.WebParamFilter;
+import com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogFilterChainConst;
 import com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogInvocation;
 import com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogInvoker;
 import com.github.houbb.common.filter.api.Invoker;
@@ -40,7 +41,7 @@ public class SimpleAutoLog implements IAutoLog {
         invocation.setFilterParams(filterParams);
         invocation.setStartTime(startTimeMills);
 
-        Invoker chainInvoker = InvokerChainBuilder.buildInvokerChain(autoLogInvoker);
+        Invoker chainInvoker = InvokerChainBuilder.buildInvokerChain(autoLogInvoker, AutoLogFilterChainConst.GROUP);
         Result autoLogResult = chainInvoker.invoke(invocation);
 
         //3. 返回结果

@@ -1,9 +1,8 @@
-package com.github.houbb.auto.log.core.support.dubbo.filter;
+package com.github.houbb.auto.log.core.support.interceptor.dubbo;
 
 import com.github.houbb.auto.log.annotation.AutoLog;
 import com.github.houbb.auto.log.core.bs.AutoLogBs;
-import com.github.houbb.auto.log.core.support.dubbo.AutoLogGlobalDubboConfig;
-import com.github.houbb.auto.log.core.support.dubbo.DubboAutoLogContext;
+import com.github.houbb.auto.log.core.support.interceptor.common.AutoLogCommonGlobalAnnotation;
 import com.github.houbb.heaven.annotation.CommonEager;
 import org.apache.dubbo.rpc.*;
 
@@ -13,7 +12,12 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
-public class AbstractAutoLogDubboFilter implements Filter {
+/**
+ * 通用的抽象实现
+ *
+ * @since 1.0.0
+ */
+public abstract class AbstractAutoLogDubboFilter implements Filter {
 
     protected String buildMethodName(Invoker<?> invoker, Invocation invocation) {
         return invocation.getTargetServiceUniqueName() + "#" + invocation.getMethodName();
@@ -21,13 +25,13 @@ public class AbstractAutoLogDubboFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        DubboAutoLogContext context = new DubboAutoLogContext();
+        AutoLogDubboContext context = new AutoLogDubboContext();
         context.setInvoker(invoker);
         context.setInvocation(invocation);
         context.params(invocation.getArguments());
 
         // 其他属性
-        AutoLog autoLog = AutoLogGlobalDubboConfig.class.getAnnotation(AutoLog.class);
+        AutoLog autoLog = AutoLogCommonGlobalAnnotation.class.getAnnotation(AutoLog.class);
         String methodName = buildMethodName(invoker, invocation);
         updateAnnotationValue(autoLog, "description", methodName);
         context.autoLog(autoLog);
