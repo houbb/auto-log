@@ -43,7 +43,7 @@
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
-V0.9.0 变更
+V0.10.0 变更
 
 - 添加自适应日志策略
 
@@ -67,7 +67,7 @@ V0.9.0 变更
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
 </dependency>
 ```
 
@@ -261,7 +261,7 @@ public String paramFilter() {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-spring</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
 </dependency>
 ```
 
@@ -388,7 +388,7 @@ public class SpringDynamicServiceTest {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-springboot-starter</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
 </dependency>
 ```
 

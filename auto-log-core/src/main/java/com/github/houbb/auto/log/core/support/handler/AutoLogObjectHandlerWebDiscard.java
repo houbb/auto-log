@@ -1,6 +1,6 @@
 package com.github.houbb.auto.log.core.support.handler;
 
-import com.github.houbb.auto.log.api.IAutoLogConfig;
+import com.github.houbb.auto.log.api.IAutoLogContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
@@ -14,7 +14,7 @@ import javax.servlet.ServletResponse;
 public class AutoLogObjectHandlerWebDiscard extends AbstractAutoLogObjectHandler {
 
     @Override
-    protected Object doHandle(Object rawObject, IAutoLogConfig context) {
+    protected Object doHandle(Object rawObject, IAutoLogContext context) {
         if(rawObject instanceof ServletRequest ||
                 rawObject instanceof ServletResponse ||
                 rawObject instanceof MultipartFile) {

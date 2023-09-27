@@ -1,9 +1,8 @@
 package com.github.houbb.auto.log.core.core.impl;
 
 import com.github.houbb.auto.log.api.IAutoLog;
-import com.github.houbb.auto.log.api.IAutoLogConfig;
 import com.github.houbb.auto.log.api.IAutoLogContext;
-import com.github.houbb.auto.log.core.core.AutoLogConfig;
+import com.github.houbb.auto.log.api.IAutoLogObjectHandler;
 import com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogFilterChainConst;
 import com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogInvocation;
 import com.github.houbb.auto.log.core.support.interceptor.chain.AutoLogInvoker;
@@ -53,12 +52,12 @@ public class SimpleAutoLog implements IAutoLog {
         }
 
         Object[] filters = new Object[params.length];
+        final IAutoLogObjectHandler autoLogObjectHandler = context.autoLogObjectHandler();
         for(int i = 0; i < params.length; i++) {
             Object param = params[i];
 
-            IAutoLogConfig autoLogConfig = new AutoLogConfig();
             //TODO: 添加实现
-            Object filterParam = context.autoLogObjectHandler().handle(param, autoLogConfig);
+            Object filterParam = autoLogObjectHandler.handle(param, context);
 
             filters[i] = filterParam;
         }

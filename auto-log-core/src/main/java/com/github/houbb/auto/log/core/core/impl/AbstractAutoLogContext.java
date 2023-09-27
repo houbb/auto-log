@@ -36,6 +36,11 @@ public abstract class AbstractAutoLogContext implements IAutoLogContext {
      */
     private IAutoLogObjectHandler autoLogObjectHandler;
 
+    /**
+     * 丢弃的大小限制
+     */
+    private int discardSizeLimit;
+
     @Override
     public AutoLog autoLog() {
         return autoLog;
@@ -74,6 +79,15 @@ public abstract class AbstractAutoLogContext implements IAutoLogContext {
     @Override
     public void autoLogObjectHandler(IAutoLogObjectHandler autoLogObjectHandler) {
         this.autoLogObjectHandler = autoLogObjectHandler;
+    }
+
+    @Override
+    public int discardSizeLimit() {
+        return discardSizeLimit;
+    }
+
+    public void discardSizeLimit(int discardSizeLimit) {
+        this.discardSizeLimit = discardSizeLimit;
     }
 
 }

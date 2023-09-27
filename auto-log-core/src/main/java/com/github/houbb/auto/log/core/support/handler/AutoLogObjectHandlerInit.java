@@ -1,6 +1,6 @@
 package com.github.houbb.auto.log.core.support.handler;
 
-import com.github.houbb.auto.log.api.IAutoLogConfig;
+import com.github.houbb.auto.log.api.IAutoLogContext;
 import com.github.houbb.auto.log.api.IAutoLogObjectHandler;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.pipeline.Pipeline;
@@ -26,7 +26,7 @@ public abstract class AutoLogObjectHandlerInit implements IAutoLogObjectHandler 
     protected abstract void init(final Pipeline<IAutoLogObjectHandler> pipeline);
 
     @Override
-    public Object handle(Object rawObject, IAutoLogConfig context) throws Exception {
+    public Object handle(Object rawObject, IAutoLogContext context) throws Exception {
         Pipeline<IAutoLogObjectHandler> pipeline = new DefaultPipeline<>();
         this.init(pipeline);
 

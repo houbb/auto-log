@@ -52,4 +52,15 @@ public interface IAutoLogContext {
      */
     IAutoLogObjectHandler autoLogObjectHandler();
 
+    /**
+     * 丢弃的大小限制
+     */
+    int discardSizeLimit();
+
+    /**
+     * 设置大小
+     * @param discardSizeLimit 限制
+     */
+    void discardSizeLimit(int discardSizeLimit);
+
 }

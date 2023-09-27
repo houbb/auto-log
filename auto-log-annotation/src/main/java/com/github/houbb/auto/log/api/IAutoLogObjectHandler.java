@@ -14,6 +14,6 @@ public interface IAutoLogObjectHandler {
      * @return 结果
      * @throws Exception 异常信息
      */
-    Object handle(Object rawObject, IAutoLogConfig context) throws Exception;
+    Object handle(Object rawObject, IAutoLogContext context) throws Exception;
 
 }

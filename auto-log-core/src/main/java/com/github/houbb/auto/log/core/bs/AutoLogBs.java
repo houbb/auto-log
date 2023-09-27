@@ -39,12 +39,23 @@ public final class AutoLogBs {
     private IAutoLogObjectHandler autoLogObjectHandler = AutoLogObjectHandlers.defaults();
 
     /**
+     * 丢弃的大小限制
+     * @since 0.10.0
+     */
+    private int discardSizeLimit = 1001;
+
+    /**
      * 新建对象实例
      * @return this
      * @since 0.0.3
      */
     public static AutoLogBs newInstance() {
         return new AutoLogBs();
+    }
+
+    public AutoLogBs discardSizeLimit(int discardSizeLimit) {
+        this.discardSizeLimit = discardSizeLimit;
+        return this;
     }
 
     public AutoLogBs autoLog(IAutoLog autoLog) {
@@ -78,6 +89,7 @@ public final class AutoLogBs {
      */
     public Object execute() throws Throwable {
         context.autoLogObjectHandler(autoLogObjectHandler);
+        context.discardSizeLimit();
         return autoLog.autoLog(context);
     }
 

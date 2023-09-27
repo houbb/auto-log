@@ -26,7 +26,7 @@ public class DefineService {
      * @return 结果
      * @since 0.0.12
      */
-    @AutoLog(paramFilter = MyParamFilter.class)
+    @AutoLog
     public String paramFilter() {
         return "自定义入参过滤器";
     }
