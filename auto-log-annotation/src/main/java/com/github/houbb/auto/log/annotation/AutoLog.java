@@ -120,15 +120,6 @@ public @interface AutoLog {
     boolean enableTraceId() default false;
 
     /**
-     * 指定参数过滤器
-     *
-     * 作用：过滤 HttpRequest/HttpResponse 等不支持 JSON 序列化的特殊对象
-     * @return 是否过滤
-     * @since 0.0.12
-     */
-    Class<? extends IParamFilter> paramFilter() default IParamFilter.class;
-
-    /**
      * 采样条件
      * @return 采样
      * @since 0.5.0

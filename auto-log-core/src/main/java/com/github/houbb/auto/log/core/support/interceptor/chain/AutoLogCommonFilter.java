@@ -222,6 +222,8 @@ public class AutoLogCommonFilter implements CommonFilter {
 
         // 入参
         if(autoLog.param()) {
+            // 构建 params
+
             Object[] params = autoLogInvocation.getFilterParams();
             logBuilder.append(String.format("[PARAM=%s]", getParamsString(params)));
         }

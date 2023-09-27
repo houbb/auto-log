@@ -39,7 +39,7 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.3.0</heaven.version>
+        <heaven.version>0.4.0-SNAPSHOT</heaven.version>
         <log-integration.version>1.1.8</log-integration.version>
         <aop.version>0.0.4</aop.version>
         <test.version>0.0.1</test.version>

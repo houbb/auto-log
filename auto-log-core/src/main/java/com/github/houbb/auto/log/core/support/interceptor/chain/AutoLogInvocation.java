@@ -15,6 +15,11 @@ public class AutoLogInvocation extends CommonInvocation {
 
     private Object[] filterParams;
 
+    /**
+     * 原始的入参
+     */
+    private Object[] rawParams;
+
     public IAutoLogContext getAutoLogContext() {
         return autoLogContext;
     }
@@ -37,5 +42,13 @@ public class AutoLogInvocation extends CommonInvocation {
 
     public void setFilterParams(Object[] filterParams) {
         this.filterParams = filterParams;
+    }
+
+    public Object[] getRawParams() {
+        return rawParams;
+    }
+
+    public void setRawParams(Object[] rawParams) {
+        this.rawParams = rawParams;
     }
 }

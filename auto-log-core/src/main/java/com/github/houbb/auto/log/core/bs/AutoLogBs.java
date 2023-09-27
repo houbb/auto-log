@@ -2,7 +2,9 @@ package com.github.houbb.auto.log.core.bs;
 
 import com.github.houbb.auto.log.api.IAutoLog;
 import com.github.houbb.auto.log.api.IAutoLogContext;
+import com.github.houbb.auto.log.api.IAutoLogObjectHandler;
 import com.github.houbb.auto.log.core.core.impl.SimpleAutoLog;
+import com.github.houbb.auto.log.core.support.handler.AutoLogObjectHandlers;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
 import com.github.houbb.log.integration.core.Log;
@@ -32,6 +34,11 @@ public final class AutoLogBs {
     private IAutoLog autoLog = new SimpleAutoLog();
 
     /**
+     * @since 0.10.0
+     */
+    private IAutoLogObjectHandler autoLogObjectHandler = AutoLogObjectHandlers.defaults();
+
+    /**
      * 新建对象实例
      * @return this
      * @since 0.0.3
@@ -56,6 +63,13 @@ public final class AutoLogBs {
         return this;
     }
 
+    public AutoLogBs autoLogObjectHandler(IAutoLogObjectHandler autoLogObjectHandler) {
+        ArgUtil.notNull(autoLogObjectHandler, "autoLogObjectHandler");
+
+        this.autoLogObjectHandler = autoLogObjectHandler;
+        return this;
+    }
+
     /**
      * 自定日志输出
      * @return 输出
@@ -63,6 +77,7 @@ public final class AutoLogBs {
      * @throws Throwable 执行异常
      */
     public Object execute() throws Throwable {
+        context.autoLogObjectHandler(autoLogObjectHandler);
         return autoLog.autoLog(context);
     }
 

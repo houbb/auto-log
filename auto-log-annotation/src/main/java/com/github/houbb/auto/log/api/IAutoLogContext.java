@@ -40,4 +40,16 @@ public interface IAutoLogContext {
      */
     Object process() throws Throwable;
 
+    /**
+     * 设置处理类
+     * @param autoLogObjectHandler 处理类
+     */
+    void autoLogObjectHandler(IAutoLogObjectHandler autoLogObjectHandler);
+
+    /**
+     * 获取处理类
+     * @return 获取
+     */
+    IAutoLogObjectHandler autoLogObjectHandler();
+
 }
