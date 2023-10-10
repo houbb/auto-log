@@ -37,7 +37,7 @@ public class AutoLogObjectHandlers {
      * @return 策略
      */
     public static IAutoLogObjectHandler defaults() {
-        return chains(webDiscard(), bigMemoryDiscard());
+        return chains(webDiscard(), dubboResult(), bigMemoryDiscard());
     }
 
     /**
@@ -62,6 +62,15 @@ public class AutoLogObjectHandlers {
      */
     public static IAutoLogObjectHandler bigMemoryDiscard() {
         return new AutoLogObjectHandlerBigMemoryDiscard();
+    }
+
+    /**
+     * dubbo 结果
+     * @return 原始
+     * @since 0.11.0
+     */
+    public static IAutoLogObjectHandler dubboResult() {
+        return new AutoLogObjectHandlerDubboResult();
     }
 
 }

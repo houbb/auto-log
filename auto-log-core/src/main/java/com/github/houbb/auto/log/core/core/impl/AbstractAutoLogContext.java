@@ -41,6 +41,12 @@ public abstract class AbstractAutoLogContext implements IAutoLogContext {
      */
     private int discardSizeLimit;
 
+    /**
+     * 最长的日志长度
+     * @since 0.11.0
+     */
+    private int maxLogLen = 65535;
+
     @Override
     public AutoLog autoLog() {
         return autoLog;
@@ -88,6 +94,16 @@ public abstract class AbstractAutoLogContext implements IAutoLogContext {
 
     public void discardSizeLimit(int discardSizeLimit) {
         this.discardSizeLimit = discardSizeLimit;
+    }
+
+    @Override
+    public int maxLogLen() {
+        return maxLogLen;
+    }
+
+    @Override
+    public void maxLogLen(int maxLogLen) {
+        this.maxLogLen = maxLogLen;
     }
 
 }

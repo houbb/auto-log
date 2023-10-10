@@ -17,11 +17,17 @@ public class AutoLogObjectHandlerBigMemoryDiscard extends AbstractAutoLogObjectH
     @Override
     protected Object doHandle(Object rawObject, IAutoLogContext config) {
         // 对象大小
-        int maxSize = Math.max(ObjectUtil.getObjectCollectionSize(rawObject), ObjectUtil.getMaxFieldSize(rawObject));
+        int objectCollectionSize = ObjectUtil.getObjectCollectionSize(rawObject);
 
         // 执行丢弃
-        if(maxSize >= config.discardSizeLimit()) {
-            log.warn("[AutoLog] Discard object with size {} >= limit {}", maxSize, config.discardSizeLimit());
+        final String className = rawObject.getClass().getName();
+        if(objectCollectionSize >= config.discardSizeLimit()) {
+            log.warn("[AutoLog] Discard object with size {} >= limit {} className={}", objectCollectionSize, config.discardSizeLimit(), className);
+            return null;
+        }
+        int maxFieldSize = ObjectUtil.getMaxFieldSize(rawObject);
+        if(maxFieldSize >= config.discardSizeLimit()) {
+            log.warn("[AutoLog] Discard object field with size {} >= limit {} className={}", maxFieldSize, config.discardSizeLimit(), className);
             return null;
         }
 

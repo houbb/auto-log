@@ -39,13 +39,15 @@
 
 - 支持日志条件输出，支持日志自适应输出
 
+- 支持日志的超长截断+丢弃策略，避免极端情况的性能问题
+
 ## 变更日志
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
 
-V0.10.0 变更
+V0.11.0 变更
 
-- 添加自适应日志策略
+- 支持日志的超长截断+丢弃策略，避免极端情况的性能问题
 
 ## 拓展阅读
 
@@ -67,7 +69,7 @@ V0.10.0 变更
 <dependency>
     <group>com.github.houbb</group>
     <artifact>auto-log-core</artifact>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
 </dependency>
 ```
 
@@ -261,7 +263,7 @@ public String paramFilter() {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-spring</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
 </dependency>
 ```
 
@@ -388,7 +390,7 @@ public class SpringDynamicServiceTest {
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log-springboot-starter</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
 </dependency>
 ```
 

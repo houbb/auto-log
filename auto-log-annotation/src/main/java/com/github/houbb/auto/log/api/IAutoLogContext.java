@@ -63,4 +63,16 @@ public interface IAutoLogContext {
      */
     void discardSizeLimit(int discardSizeLimit);
 
+    /**
+     * 最长的日志长度
+     * @since 0.11.0
+     */
+    void maxLogLen(int len);
+
+    /**
+     * 最长的日志长度
+     * @since 0.11.0
+     */
+    int maxLogLen();
+
 }

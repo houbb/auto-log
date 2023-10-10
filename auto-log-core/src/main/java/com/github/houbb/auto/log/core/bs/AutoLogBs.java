@@ -45,6 +45,12 @@ public final class AutoLogBs {
     private int discardSizeLimit = 1001;
 
     /**
+     * 最长的日志长度
+     * @since 0.11.0
+     */
+    private int maxLogLen = 65535;
+
+    /**
      * 新建对象实例
      * @return this
      * @since 0.0.3
@@ -81,6 +87,11 @@ public final class AutoLogBs {
         return this;
     }
 
+    public AutoLogBs maxLogLen(int maxLogLen) {
+        this.maxLogLen = maxLogLen;
+        return this;
+    }
+
     /**
      * 自定日志输出
      * @return 输出
@@ -89,7 +100,8 @@ public final class AutoLogBs {
      */
     public Object execute() throws Throwable {
         context.autoLogObjectHandler(autoLogObjectHandler);
-        context.discardSizeLimit();
+        context.discardSizeLimit(discardSizeLimit);
+        context.maxLogLen(maxLogLen);
         return autoLog.autoLog(context);
     }
 

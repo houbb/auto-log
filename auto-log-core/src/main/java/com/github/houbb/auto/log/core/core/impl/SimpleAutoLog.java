@@ -34,7 +34,6 @@ public class SimpleAutoLog implements IAutoLog {
         AutoLogInvocation invocation = new AutoLogInvocation();
         invocation.setAutoLogContext(context);
         invocation.setRawParams(context.params());
-        invocation.setFilterParams(context.params());
         invocation.setStartTime(startTimeMills);
 
         Invoker chainInvoker = InvokerChainBuilder.buildInvokerChain(autoLogInvoker, AutoLogFilterChainConst.GROUP);
@@ -43,27 +42,5 @@ public class SimpleAutoLog implements IAutoLog {
         //3. 返回结果
         return autoLogResult.getValue();
     }
-
-    private Object[] getFilterParams(IAutoLogContext context) throws Exception {
-        Object[] params = context.params();
-
-        if(ArrayUtil.isEmpty(params)) {
-            return params;
-        }
-
-        Object[] filters = new Object[params.length];
-        final IAutoLogObjectHandler autoLogObjectHandler = context.autoLogObjectHandler();
-        for(int i = 0; i < params.length; i++) {
-            Object param = params[i];
-
-            //TODO: 添加实现
-            Object filterParam = autoLogObjectHandler.handle(param, context);
-
-            filters[i] = filterParam;
-        }
-
-        return filters;
-    }
-
 
 }

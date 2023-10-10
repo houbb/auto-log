@@ -13,8 +13,6 @@ public class AutoLogInvocation extends CommonInvocation {
 
     private long startTime;
 
-    private Object[] filterParams;
-
     /**
      * 原始的入参
      */
@@ -34,14 +32,6 @@ public class AutoLogInvocation extends CommonInvocation {
 
     public void setStartTime(long startTime) {
         this.startTime = startTime;
-    }
-
-    public Object[] getFilterParams() {
-        return filterParams;
-    }
-
-    public void setFilterParams(Object[] filterParams) {
-        this.filterParams = filterParams;
     }
 
     public Object[] getRawParams() {
