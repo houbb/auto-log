@@ -12,7 +12,7 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>auto-log</artifactId>
     <packaging>pom</packaging>
-    <version>0.11.0</version>
+    <version>0.12.0</version>
     <modules>
         <module>auto-log-annotation</module>
         <module>auto-log-core</module>
@@ -39,7 +39,7 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.4.0</heaven.version>
+        <heaven.version>0.8.0</heaven.version>
         <log-integration.version>1.1.8</log-integration.version>
         <aop.version>0.0.4</aop.version>
         <test.version>0.0.1</test.version>
@@ -54,7 +54,7 @@
         <spring.version>4.3.15.RELEASE</spring.version>
         <fastjson.version>1.2.83</fastjson.version>
         <dubbo.version>2.7.7</dubbo.version>
-        <log4j2.version>2.2</log4j2.version>
+<!--        <log4j2.version>2.2</log4j2.version>-->
     </properties>
 
     <dependencyManagement>
@@ -162,26 +162,26 @@
             </dependency>
 
             <!-- log配置：Log4j2 + Slf4j -->
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-                <version>${log4j2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j2.version}</version>
-            </dependency>
-            <dependency> <!-- 桥接：告诉Slf4j使用Log4j2 -->
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j-impl</artifactId>
-                <version>${log4j2.version}</version>
-            </dependency>
-            <dependency> <!-- 桥接：告诉commons logging使用Log4j2 -->
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-jcl</artifactId>
-                <version>${log4j2.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.apache.logging.log4j</groupId>-->
+<!--                <artifactId>log4j-api</artifactId>-->
+<!--                <version>${log4j2.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.apache.logging.log4j</groupId>-->
+<!--                <artifactId>log4j-core</artifactId>-->
+<!--                <version>${log4j2.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency> &lt;!&ndash; 桥接：告诉Slf4j使用Log4j2 &ndash;&gt;-->
+<!--                <groupId>org.apache.logging.log4j</groupId>-->
+<!--                <artifactId>log4j-slf4j-impl</artifactId>-->
+<!--                <version>${log4j2.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency> &lt;!&ndash; 桥接：告诉commons logging使用Log4j2 &ndash;&gt;-->
+<!--                <groupId>org.apache.logging.log4j</groupId>-->
+<!--                <artifactId>log4j-jcl</artifactId>-->
+<!--                <version>${log4j2.version}</version>-->
+<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
