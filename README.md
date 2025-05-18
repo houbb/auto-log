@@ -41,6 +41,20 @@
 
 - 支持日志的超长截断+丢弃策略，避免极端情况的性能问题
 
+## 项目推荐
+
+下面是一些日志、加解密、脱敏安全相关的库推荐：
+
+| 项目                                                                    | 介绍                    |
+|:----------------------------------------------------------------------|:----------------------|
+| [sensitive-word](https://github.com/houbb/sensitive-word)             | 高性能敏感词核心库             |
+| [sensitive-word-admin](https://github.com/houbb/sensitive-word-admin) | 敏感词控台，前后端分离           |
+| [sensitive](https://github.com/houbb/sensitive)                       | 高性能日志脱敏组件             |
+| [auto-log](https://github.com/houbb/auto-log)                         | 统一日志切面组件，支持全链路traceId |
+| [encryption-local](https://github.com/houbb/encryption-local)         | 离线加密机组件               |
+| [encryption](https://github.com/houbb/encryption)         | 加密机标准API+本地客户端        |
+| [encryption-server](https://github.com/houbb/encryption-server)        | 加密机服务                 |
+
 ## 变更日志
 
 > [变更日志](https://github.com/houbb/auto-log/blob/master/CHANGELOG.md)
